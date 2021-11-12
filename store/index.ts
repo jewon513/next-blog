@@ -3,9 +3,11 @@ import {createWrapper, HYDRATE} from "next-redux-wrapper";
 import {AnyAction, CombinedState, combineReducers, configureStore} from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga"
 import rootSagas from "./sagas";
+import common from "./modules/common";
 
 const rootReducer = combineReducers({
   sample,
+  common
 })
 
 const reducer = (state:CombinedState<any>, action:AnyAction)=>{
