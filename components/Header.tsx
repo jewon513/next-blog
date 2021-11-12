@@ -1,6 +1,5 @@
 import {Box, Drawer, Grid, IconButton, Typography, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import {useState} from "react";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import useChangeTheme from "../hooks/useChangeTheme";
@@ -25,7 +24,9 @@ const Header = ()=>{
             justifyContent={"space-between"}
             alignItems={"center"}>
         <Grid item={true}>
-          <Typography variant={"h4"}>
+          <Typography variant={"h4"} sx={{
+            fontWeight:"bold"
+          }}>
             Hello
           </Typography>
         </Grid>

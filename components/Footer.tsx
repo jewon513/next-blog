@@ -8,10 +8,10 @@ const Footer = ()=>{
          id={"footerWrapper"}>
       <Grid container={true} justifyContent={"center"}>
         <Grid item={true}>
-          <IconButton href={"mailto:jewon513@gmail.com"}>
+          <IconButton href={"mailto:jewon513@gmail.com"} color={"primary"}>
             <MailIcon/>
           </IconButton>
-          <IconButton href={"https://github.com/jewon513"}>
+          <IconButton href={"https://github.com/jewon513"} color={"primary"}>
             <GitHubIcon/>
           </IconButton>
         </Grid>
