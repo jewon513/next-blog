@@ -13,7 +13,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const {theme} = useChangeTheme()
   const dispatch = useDispatch()
-  const loading = useSelector(state => state.common.loading)
 
   useIsomorphicLayoutEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {

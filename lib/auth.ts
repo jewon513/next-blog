@@ -1,14 +1,8 @@
 import { nanoid } from 'nanoid'
 import { SignJWT, jwtVerify } from 'jose'
 import { USER_TOKEN, JWT_SECRET_KEY } from './constants'
-import { jsonResponse } from './utils'
 import type {NextApiRequest, NextApiResponse} from "next";
 import { serialize } from 'cookie'
-
-interface UserJwtPayload {
-  jti: string
-  iat: number
-}
 
 /**
  * Verifies the user's JWT token and returns the payload if
@@ -16,9 +10,13 @@ interface UserJwtPayload {
  */
 export async function verifyAuth(request: NextApiRequest) {
   const token = request.cookies[USER_TOKEN]
-
   if (!token) {
-    return jsonResponse(401, { error: { message: 'Missing user token' } })
+    return {
+      status: 401,
+      error: {
+        message: 'Missing user token'
+      }
+    }
   }
 
   try {
@@ -26,9 +24,14 @@ export async function verifyAuth(request: NextApiRequest) {
       token,
       new TextEncoder().encode(JWT_SECRET_KEY)
     )
-    return verified.payload as UserJwtPayload
+    return verified.payload
   } catch (err) {
-    return jsonResponse(401, { error: { message: 'Your token has expired.' } })
+    return {
+      status: 401,
+      error: {
+        message: 'Your token has expired.'
+      }
+    }
   }
 }
 
@@ -38,19 +41,14 @@ export async function verifyAuth(request: NextApiRequest) {
 export async function setUserCookie(
   request: NextApiRequest,
   response: NextApiResponse,
-  payload: object
+  payload: any
 ) {
-  const cookie = request.cookies[USER_TOKEN]
-  debugger
-  if (!cookie) {
-    const token = await new SignJWT({...payload})
-      .setProtectedHeader({ alg: 'HS256' })
-      .setJti(nanoid())
-      .setIssuedAt()
-      .setExpirationTime('2h')
-      .sign(new TextEncoder().encode(JWT_SECRET_KEY))
-    response.setHeader('Set-Cookie', serialize(USER_TOKEN, token, {httpOnly: true}))
-    return token
-  }
-  return {}
+  const token = await new SignJWT({...payload})
+    .setProtectedHeader({ alg: 'HS256' })
+    .setJti(nanoid())
+    .setIssuedAt()
+    .setExpirationTime('1h')
+    .sign(new TextEncoder().encode(JWT_SECRET_KEY))
+  response.setHeader('Set-Cookie', serialize(USER_TOKEN, token))
+  return token
 }
