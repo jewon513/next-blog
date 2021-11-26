@@ -3,7 +3,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import MailIcon from '@mui/icons-material/Mail';
 import LockIcon from '@mui/icons-material/Lock';
 import useDialog from "../hooks/useDialog";
-import LoginFormDialog from "../modules/LoginFormDialog";
+import LoginFormDialog from "./dialog/LoginFormDialog";
 
 const Footer = ()=>{
 
@@ -37,8 +37,7 @@ const Footer = ()=>{
         </Grid>
       </Box>
 
-      <LoginFormDialog open={loginOpen} handleClickOpen={setLoginOpen} handleClose={setLoginClose}/>
-
+      <LoginFormDialog open={loginOpen} handleClose={setLoginClose}/>
     </>
   )
 }

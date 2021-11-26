@@ -1,0 +1,1 @@
+export type ApiState = "idle" | "loading" | "success" | "failure"
