@@ -4,10 +4,12 @@ import {AnyAction, CombinedState, combineReducers, configureStore} from "@reduxj
 import createSagaMiddleware from "redux-saga"
 import rootSagas from "./sagas";
 import common from "./modules/common";
+import user from "./modules/user"
 
 const rootReducer = combineReducers({
   sample,
-  common
+  common,
+  user
 })
 
 const reducer = (state:CombinedState<any>, action:AnyAction)=>{

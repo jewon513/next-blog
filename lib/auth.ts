@@ -2,14 +2,21 @@ import { nanoid } from 'nanoid'
 import { SignJWT, jwtVerify } from 'jose'
 import { USER_TOKEN, JWT_SECRET_KEY } from './constants'
 import type {NextApiRequest, NextApiResponse} from "next";
-import { serialize } from 'cookie'
+import { serialize , parse} from 'cookie'
+import { NextResponse } from 'next/server'
 
 /**
  * Verifies the user's JWT token and returns the payload if
  * it's valid or a response if it's not.
  */
-export async function verifyAuth(request: NextApiRequest) {
-  const token = request.cookies[USER_TOKEN]
+export async function verifyAuth({request, cookie}:{request?: NextApiRequest, cookie?:string}) {
+  let token: any = undefined
+  if(request){
+    token = request.cookies[USER_TOKEN]
+  }
+  if(cookie){
+    token = parse(cookie)[USER_TOKEN]
+  }
   if (!token) {
     return {
       status: 401,
@@ -43,12 +50,16 @@ export async function setUserCookie(
   response: NextApiResponse,
   payload: any
 ) {
-  const token = await new SignJWT({...payload})
+  const token = await new SignJWT({userData:payload})
     .setProtectedHeader({ alg: 'HS256' })
     .setJti(nanoid())
     .setIssuedAt()
     .setExpirationTime('1h')
     .sign(new TextEncoder().encode(JWT_SECRET_KEY))
-  response.setHeader('Set-Cookie', serialize(USER_TOKEN, token))
+  response.setHeader('Set-Cookie', [
+    serialize(USER_TOKEN, token,{
+      path:"/"
+    })
+  ])
   return token
 }

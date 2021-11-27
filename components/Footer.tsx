@@ -4,10 +4,17 @@ import MailIcon from '@mui/icons-material/Mail';
 import LockIcon from '@mui/icons-material/Lock';
 import useDialog from "../hooks/useDialog";
 import LoginFormDialog from "./dialog/LoginFormDialog";
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import {useState} from "react";
+import {useSelector} from "react-redux";
+import user from "../store/modules/user";
+import useLogout from "../hooks/useLogout";
 
 const Footer = ()=>{
 
   const [loginOpen, setLoginOpen, setLoginClose] = useDialog();
+  const isLogin = useSelector(state=>state.user.isLogin)
+  const logout = useLogout()
 
   return (
     <>
@@ -21,9 +28,15 @@ const Footer = ()=>{
             <IconButton href={"https://github.com/jewon513"} color={"primary"}>
               <GitHubIcon/>
             </IconButton>
-            <IconButton onClick={setLoginOpen} color={"primary"}>
-              <LockIcon/>
-            </IconButton>
+            {isLogin ? (
+              <IconButton onClick={logout} color={"primary"}>
+                <LockOpenIcon/>
+              </IconButton>
+            ) : (
+              <IconButton onClick={setLoginOpen} color={"primary"}>
+                <LockIcon/>
+              </IconButton>
+            )}
           </Grid>
         </Grid>
         <Grid container={true} justifyContent={"center"}>
