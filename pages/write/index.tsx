@@ -1,10 +1,10 @@
-import Layout from "../../components/Layout";
+import dynamic from "next/dynamic";
+
+const PostWriteDynamic = dynamic(()=> import("../../modules/PostWrite"),{ssr:false})
 
 const WritePage = ()=>{
   return (
-    <Layout>
-
-    </Layout>
+    <PostWriteDynamic/>
   )
 }
 
