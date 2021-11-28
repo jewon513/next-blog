@@ -11,8 +11,8 @@ export const initUserState: UserState = {
   userData: {
    user_id:"",
    user_no:0,
-   user_name:"",
-   user_role:""
+   user_name:"unKnown",
+   user_role:"all"
   }
 }
 

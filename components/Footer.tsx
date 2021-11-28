@@ -5,9 +5,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import useDialog from "../hooks/useDialog";
 import LoginFormDialog from "./dialog/LoginFormDialog";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import {useState} from "react";
 import {useSelector} from "react-redux";
-import user from "../store/modules/user";
 import useLogout from "../hooks/useLogout";
 
 const Footer = ()=>{

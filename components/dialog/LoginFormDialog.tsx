@@ -1,19 +1,11 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  useFormControl
-} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import useInput from "../../hooks/useInput";
 import useLogin from "../../hooks/useLogin";
 
 const LoginFormDialog = ({open=false, handleClose=()=>{}})=>{
 
-  const [email, onEmailChange] = useInput("");
-  const [password, onPasswordChange] = useInput("");
+  const [email, setEmail, onEmailChange] = useInput("");
+  const [password, setPassword, onPasswordChange] = useInput("");
   const [loginState, login] = useLogin()
 
   return (
@@ -26,6 +18,8 @@ const LoginFormDialog = ({open=false, handleClose=()=>{}})=>{
             user_pw: password
           })
           handleClose()
+          setEmail("")
+          setPassword("")
         }}>
           <DialogTitle>Login</DialogTitle>
           <DialogContent>

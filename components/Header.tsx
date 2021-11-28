@@ -1,13 +1,11 @@
-import {Box, Drawer, Grid, IconButton, Typography, useTheme} from "@mui/material";
+import {Drawer, Grid, IconButton, Typography, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import useChangeTheme from "../hooks/useChangeTheme";
 import {useDispatch, useSelector} from "react-redux";
 import {commonActions} from "../store/modules/common";
-import DrawerList from "./list/DrawerList";
-import LoginIcon from '@mui/icons-material/Login';
-import useDialog from "../hooks/useDialog";
+import DrawerList from "./list/DrawerList"
 
 const Header = ()=>{
 
@@ -29,7 +27,7 @@ const Header = ()=>{
           <Typography variant={"h4"} sx={{
             fontWeight:"bold"
           }}>
-            Hello
+            Tokki
           </Typography>
         </Grid>
         <Grid item={true}>

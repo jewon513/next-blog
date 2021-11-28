@@ -1,4 +1,5 @@
 import {ChangeEvent, ChangeEventHandler, useState} from "react";
+import {set} from "immer/dist/utils/common";
 
 const useInput = (defaultValue:any)=>{
 
@@ -7,7 +8,7 @@ const useInput = (defaultValue:any)=>{
     setState(e.target.value)
   }
 
-  return [state, onChange] as const
+  return [state, setState, onChange] as const
 }
 
 export default useInput

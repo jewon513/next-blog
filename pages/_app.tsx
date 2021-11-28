@@ -39,7 +39,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-MyApp.getInitialProps = wrapper.getInitialAppProps(store => async({ Component, ctx })=>{
+MyApp.getInitialProps = wrapper.getInitialAppProps(store => async(appContext)=>{
+  const {Component, ctx} = appContext
   let pageProps = {};
   // 하위 컴포넌트에 getInitialProps가 있다면 추가 (각 개별 컴포넌트에서 사용할 값 추가)
   if (Component.getInitialProps) {
