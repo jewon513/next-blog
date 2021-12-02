@@ -1,7 +1,8 @@
 import {Box, Button, Grid, Typography} from "@mui/material";
 import dayjs from "dayjs"
+import {MouseEventHandler} from "react";
 
-const PostList = ({title, subTitle, date}:{title:string, subTitle:string, date:string})=>{
+const PostList = ({title, subTitle, date, onClick}:{title:string, subTitle:string, date:string, onClick:MouseEventHandler<Element>})=>{
 
   return (
     <Box sx={{
@@ -28,7 +29,7 @@ const PostList = ({title, subTitle, date}:{title:string, subTitle:string, date:s
         <Grid item={true} xs={12}>
           <Typography component={"a"} variant={"subtitle1"} color={"primary"} sx={{
             cursor:"pointer"
-          }}>
+          }} onClick={onClick}>
             Read more ...
           </Typography>
         </Grid>

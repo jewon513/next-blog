@@ -45,7 +45,8 @@ export const selectPostList = async ({pageNo, pagePerCnt}) => {
              b.user_name as post_user_name
       FROM post_basic as a
                LEFT JOIN user_basic as b
-                         ON a.post_user_no = b.user_no LIMIT ?, ?;
+                         ON a.post_user_no = b.user_no
+      ORDER BY a.post_ins_date DESC LIMIT ?, ?;
   `, [startNo, Number(pagePerCnt)])
   return selectResult
 }
@@ -67,9 +68,10 @@ export const selectPost = async (postNo) => {
   return result
 }
 
-export const selectPostCnt = async ()=>{
+export const selectPostCnt = async () => {
   const selectResult = await query(`
-    SELECT count(*) as cnt FROM post_basic;
+      SELECT count(*) as cnt
+      FROM post_basic;
   `)
   const result = Array.isArray(selectResult) ? selectResult[0].cnt : undefined
   return result
