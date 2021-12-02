@@ -29,6 +29,8 @@ const handler:NextApiHandler = async(req, res)=>{
           error: { message: 'Missing required parameters' },
         })
       }
+    }else if(req.method === 'DELETE'){
+
     }else{
       return res.status(405).json({
         error: { message: 'Method not allowed' },

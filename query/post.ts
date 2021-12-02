@@ -76,3 +76,10 @@ export const selectPostCnt = async () => {
   const result = Array.isArray(selectResult) ? selectResult[0].cnt : undefined
   return result
 }
+
+export const deletePost = async (postNo) => {
+  const deleteResult = await query(`
+    DELETE FROM post_basic WHERE post_no = ?
+  `,[postNo])
+  return deleteResult
+}

@@ -14,7 +14,7 @@ const PostView = ()=>{
       {postState === "success" &&
         <>
           <PostViewHeader postTitle={post.post_title} postInsDate={post.post_ins_date}/>
-          <Viewer initialValue={post.post_contents}/>
+          <Viewer initialValue={post.post_contents} />
         </>
       }
     </Layout>

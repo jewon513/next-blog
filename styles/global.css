@@ -45,3 +45,19 @@
     url('/fonts/NotoSansKR-Thin.otf') format('opentype');
     font-weight: 100;
 }
+.ProseMirror {
+    font-family: 'NotoSansKR';
+    color: #222;
+    font-size: 16px;
+    overflow-y: auto;
+    overflow-X: hidden;
+    height: calc(100% - 36px);
+}
+
+.toastui-editor-contents{
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: 'NotoSansKR';
+    z-index: 20;
+}

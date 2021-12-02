@@ -2,13 +2,13 @@ import type {AppProps} from 'next/app'
 import wrapper from "../store";
 import {ThemeProvider} from "@mui/material";
 import useChangeTheme from "../hooks/useChangeTheme";
+import '@toast-ui/editor/dist/toastui-editor.css';
 import "../styles/global.css"
 import 'reset-css';
 import {useDispatch} from "react-redux";
 import {verifyAuth} from "../lib/auth";
 import {userAction} from "../store/modules/user";
 import {LoginResult} from "../query/user";
-import '@toast-ui/editor/dist/toastui-editor.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
