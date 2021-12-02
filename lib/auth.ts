@@ -9,7 +9,15 @@ import { NextResponse } from 'next/server'
  * Verifies the user's JWT token and returns the payload if
  * it's valid or a response if it's not.
  */
-export async function verifyAuth({request, cookie}:{request?: NextApiRequest, cookie?:string}) {
+export type AuthResultType = {
+  status: number,
+  data?: any,
+  error?: {
+    message: string
+  }
+}
+
+export const verifyAuth = async({request, cookie}:{request?: NextApiRequest, cookie?:string}):Promise<AuthResultType>=>{
   let token: any = undefined
   if(request){
     token = request.cookies[USER_TOKEN]
@@ -31,7 +39,10 @@ export async function verifyAuth({request, cookie}:{request?: NextApiRequest, co
       token,
       new TextEncoder().encode(JWT_SECRET_KEY)
     )
-    return verified.payload
+    return {
+      status: 200,
+      data: verified.payload
+    }
   } catch (err) {
     return {
       status: 401,
@@ -56,10 +67,10 @@ export async function setUserCookie(
     .setIssuedAt()
     .setExpirationTime('1h')
     .sign(new TextEncoder().encode(JWT_SECRET_KEY))
-  response.setHeader('Set-Cookie', [
+  response.setHeader('Set-Cookie',
     serialize(USER_TOKEN, token,{
       path:"/"
     })
-  ])
+  )
   return token
 }

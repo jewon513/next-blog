@@ -31,9 +31,9 @@ const Header = ()=>{
           </Typography>
         </Grid>
         <Grid item={true}>
-          <IconButton onClick={toggleEvent} color={"inherit"}>
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
+          {/*<IconButton onClick={toggleEvent} color={"inherit"}>*/}
+          {/*  {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}*/}
+          {/*</IconButton>*/}
           <IconButton onClick={()=>{dispatch(commonActions.toggleDrawer())}} color={"inherit"}>
             <MenuIcon/>
           </IconButton>

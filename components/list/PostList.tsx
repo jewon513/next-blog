@@ -1,5 +1,5 @@
 import {Box, Button, Grid, Typography} from "@mui/material";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import dayjs from "dayjs"
 
 const PostList = ({title, subTitle, date}:{title:string, subTitle:string, date:string})=>{
 
@@ -12,7 +12,7 @@ const PostList = ({title, subTitle, date}:{title:string, subTitle:string, date:s
       <Grid container={true}>
         <Grid item={true} xs={12}>
           <Typography variant={"subtitle2"} color={"gray"}>
-            {date}
+            {dayjs(date).format("YYYY-MM-DD")}
           </Typography>
         </Grid>
         <Grid item={true} xs={12}>

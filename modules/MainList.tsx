@@ -1,44 +1,30 @@
 import Layout from "../components/Layout";
 import PostList from "../components/list/PostList";
+import useGetPostList from "../hooks/useGetPostList";
+import {Box, Grid, Pagination} from "@mui/material";
+import LoadingSpinner from "../components/loading/LoadingSpinner";
 
-const MainList = ()=>{
+const MainList = ()=> {
 
-  type Post = {
-    title:string,
-    subTitle:string,
-    date:string
-  }
-  const postList:Array<Post> = [
-    {
-      title:"Title",
-      subTitle:"subTitle",
-      date:"2222-02-22"
-    },{
-      title:"Title",
-      subTitle:"subTitle",
-      date:"2222-02-22"
-    },{
-      title:"Title",
-      subTitle:"subTitle",
-      date:"2222-02-22"
-    },{
-      title:"Title",
-      subTitle:"subTitle",
-      date:"2222-02-22"
-    },{
-      title:"Title",
-      subTitle:"subTitle",
-      date:"2222-02-22"
-    }
-  ]
+  const [postListState, lastPostNo, postList, setPostListPageNo] = useGetPostList(3)
 
   return (
     <Layout>
-      {postList.map((post,index)=>{
+      {postListState === "loading" && <LoadingSpinner/>}
+      {postListState === "success" &&
+      postList.map((post, index) => {
         return (
-          <PostList key={index} title={post.title} subTitle={post.subTitle} date={post.date}/>
+          <PostList key={post.post_no} title={post.post_title} subTitle={post.post_subtitle} date={post.post_ins_date}/>
         )
-      })}
+      })
+      }
+      <Box display={"flex"} justifyContent={"center"}>
+        <Pagination count={lastPostNo} color="primary" onChange={(event, pageNo) => {
+          setPostListPageNo(pageNo)
+        }} sx={{
+          display: (postListState === "loading" || postList.length < 1) ? "none" : "block"
+        }}/>
+      </Box>
     </Layout>
   )
 

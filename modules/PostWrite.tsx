@@ -1,16 +1,41 @@
 import Layout from "../components/Layout";
 import '@toast-ui/editor/dist/toastui-editor.css';
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Editor } from '@toast-ui/react-editor';
-import {LegacyRef, useEffect, useRef} from "react";
+import {LegacyRef, useRef} from "react";
 import {Box, Button, Grid, TextField} from "@mui/material";
+import useInput from "../hooks/useInput";
+import usePostWrite from "../hooks/usePostWrite";
+import {PostParam} from "../query/post";
+import {useSelector} from "react-redux";
+import {useRouter} from "next/router";
 
-const PostWrite = ()=>{
+const PostWrite = ()=> {
 
-  const editorRef = useRef()
+  const router = useRouter()
+  const editorRef = useRef<Editor>()
+  const [title, setTitle, onTitleChange] = useInput("");
+  const [subtitle, setSubtitle, onSubtitleChange] = useInput("");
+  const user = useSelector(state => state.user)
+  const theme = useSelector(state=>state.common.mode)
 
-  useEffect(()=>{
-    console.log(editorRef.current)
-  },[])
+  const postWrite = usePostWrite()
+  const submit = () => {
+    const html = editorRef?.current?.getInstance().getMarkdown()
+    const contents = html ? html : ""
+    const param: PostParam = {
+      post_user_no: user.userData.user_no,
+      post_contents: contents,
+      post_subtitle: subtitle,
+      post_title: title
+    }
+    postWrite(param).then(res => {
+      console.log(res)
+      router.replace("/")
+    }).catch(e => {
+      console.error(e)
+    })
+  }
 
   return (
     <Layout>
@@ -22,6 +47,8 @@ const PostWrite = ()=>{
         fullWidth
         variant="outlined"
         color={"primary"}
+        onChange={onTitleChange}
+        value={title}
       />
       <TextField
         autoFocus
@@ -31,30 +58,33 @@ const PostWrite = ()=>{
         fullWidth
         variant="outlined"
         color={"primary"}
+        onChange={onSubtitleChange}
+        value={subtitle}
       />
       <Box sx={{
-        bgcolor:"white",
-        color:"black",
         borderRadius:"4px",
         marginTop:"8px"
       }}>
         <Editor
-          initialValue="hello react editor world!"
+          initialValue=""
           previewStyle="vertical"
           height="600px"
-          initialEditType={'wysiwyg'}
-          useCommandShortcut={true}
+          initialEditType={'markdown'}
           ref={editorRef as LegacyRef<any>}
         />
       </Box>
       <Grid container={true} justifyContent={"right"} sx={{
-        marginTop:"15px"
+        marginTop: "15px"
       }}>
         <Grid item={true}>
-          <Button variant={"outlined"} onClick={()=>{}} color={"warning"}>Cancle</Button>
-          <Button variant={"outlined"} type={"submit"} color={"primary"} sx={{
-            marginLeft:"8px"
-          }}>Submit</Button>
+          <Button variant={"outlined"} onClick={() => {
+          }} color={"warning"}>Cancel</Button>
+          <Button variant={"outlined"}
+                  color={"primary"}
+                  onClick={submit}
+                  sx={{
+                    marginLeft: "8px"
+                  }}>Submit</Button>
         </Grid>
       </Grid>
     </Layout>

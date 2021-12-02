@@ -1,4 +1,3 @@
-import sample from "./modules/sample";
 import {createWrapper, HYDRATE} from "next-redux-wrapper";
 import {AnyAction, CombinedState, combineReducers, configureStore} from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga"
@@ -7,7 +6,6 @@ import common from "./modules/common";
 import user from "./modules/user"
 
 const rootReducer = combineReducers({
-  sample,
   common,
   user
 })

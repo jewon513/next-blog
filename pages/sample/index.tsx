@@ -10,24 +10,10 @@ import {sampleActions} from "../../store/modules/sample";
 const Home: NextPage = () => {
 
   const dispatch = useDispatch()
-  const sample = useSelector(state=> state.sample)
 
   return (
     <Container maxWidth={"sm"} disableGutters={true}>
-      <button onClick={()=>{
-        if(!sample.loading){
-          dispatch(sampleActions.upCount(1))
-        }
-      }}>+</button>
-      {sample.count}
-      <button onClick={()=>{
-        if(!sample.loading){
-          dispatch(sampleActions.downCount(1))
-        }
-      }}>-</button>
-      <div>
-        {sample.loading ? "로딩중" : "대기"}
-      </div>
+
     </Container>
   )
 }
