@@ -8,6 +8,7 @@ import {useDispatch} from "react-redux";
 import {verifyAuth} from "../lib/auth";
 import {userAction} from "../store/modules/user";
 import {LoginResult} from "../query/user";
+import '@toast-ui/editor/dist/toastui-editor.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
 

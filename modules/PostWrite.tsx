@@ -1,6 +1,4 @@
 import Layout from "../components/Layout";
-import '@toast-ui/editor/dist/toastui-editor.css';
-import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Editor } from '@toast-ui/react-editor';
 import {LegacyRef, useRef} from "react";
 import {Box, Button, Grid, TextField} from "@mui/material";
