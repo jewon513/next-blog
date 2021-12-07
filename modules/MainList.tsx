@@ -8,12 +8,12 @@ import {useRouter} from "next/router";
 const MainList = ()=> {
 
   const router = useRouter();
-  const [postListState, lastPostNo, postList, setPostListPageNo] = useGetPostList(3)
+  const [postList, lastPostNo, setPostListPageNo] = useGetPostList(3)
 
   return (
     <Layout>
-      {postListState === "loading" && <LoadingSpinner/>}
-      {postListState === "success" &&
+      {!postList && <LoadingSpinner/>}
+      {postList &&
       postList.map((post, index) => {
         return (
           <PostList
@@ -32,7 +32,7 @@ const MainList = ()=> {
         <Pagination count={lastPostNo} color="primary" onChange={(event, pageNo) => {
           setPostListPageNo(pageNo)
         }} sx={{
-          display: (postListState === "loading" || postList.length < 1) ? "none" : "block"
+          display: postList ? "block" : "none"
         }}/>
       </Box>
     </Layout>

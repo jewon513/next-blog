@@ -8,7 +8,7 @@ import {PostParam} from "../query/post";
 import {useSelector} from "react-redux";
 import {useRouter} from "next/router";
 
-const PostWrite = ()=> {
+const PostWrite = ({test})=> {
 
   const router = useRouter()
   const editorRef = useRef<Editor>()

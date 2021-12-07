@@ -2,38 +2,27 @@ import {useEffect, useState} from "react";
 import {ApiState} from "../lib/types";
 import axios from "axios";
 import {PostListResult, PostResult} from "../query/post";
+import useSWR from 'swr'
+
+const fetcher = url => axios.get(url).then(res => res.data)
 
 const useGetPostList = (pagePerCnt)=>{
 
-  const [state, setState] = useState<ApiState>("idle")
   const [pageNo, setPageNo] = useState(1)
-  const [list, setList] = useState<Array<PostResult>>([])
   const [lastPageNo, setLastPageNo] = useState(0)
+  const {data, error} = useSWR<PostListResult>(`/api/post?pageNo=${pageNo}&pagePerCnt=${pagePerCnt}`, fetcher)
 
   const getLastPageNo = (pagePerCnt, cnt)=>{
     return Math.ceil(cnt/pagePerCnt)
   }
 
-  const getList = async()=>{
-    try{
-      if(state !== "loading"){
-        setState("loading")
-        const res = await axios.get<PostListResult>(`/api/post?pageNo=${pageNo}&pagePerCnt=${pagePerCnt}`)
-        setList(res.data.list)
-        setLastPageNo(getLastPageNo(pagePerCnt,res.data.cnt))
-        setState("success")
-      }
-    }catch (e){
-      setState("failure")
-      console.error(e)
-    }
-  }
-
   useEffect(()=>{
-    getList()
-  },[pageNo])
+    if(data?.cnt){
+      setLastPageNo(getLastPageNo(pagePerCnt, data.cnt))
+    }
+  },[data, error])
 
-  return [state, lastPageNo, list, setPageNo] as const
+  return [data?.list, lastPageNo, setPageNo] as const
 }
 
 export default useGetPostList
