@@ -2,9 +2,9 @@ import type {AppProps} from 'next/app'
 import wrapper from "../store";
 import {ThemeProvider} from "@mui/material";
 import useChangeTheme from "../hooks/useChangeTheme";
-import '@toast-ui/editor/dist/toastui-editor.css';
+import 'normalize.css';
 import "../styles/global.css"
-import 'reset-css';
+import "../styles/editor.css"
 import {useDispatch} from "react-redux";
 import {verifyAuth} from "../lib/auth";
 import {userAction} from "../store/modules/user";
