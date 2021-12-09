@@ -1,11 +1,20 @@
-import MainList from "../modules/MainList";
+import wrapper from "../store";
 
 const index = ()=>{
-
   return (
-    <MainList/>
+    <>
+    </>
   )
-
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({query, req})=>{
+  return {
+    redirect:{
+      destination:"/list/1"
+    },
+    props:{
+    }
+  }
+})
 
 export default index

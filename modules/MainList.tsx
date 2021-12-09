@@ -4,37 +4,38 @@ import useGetPostList from "../hooks/useGetPostList";
 import {Box, Grid, Pagination} from "@mui/material";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
 import {useRouter} from "next/router";
+import PostPagination from "./PostPagination";
 
-const MainList = ()=> {
+const MainList = () => {
 
   const router = useRouter();
-  const [postList, lastPostNo, setPostListPageNo] = useGetPostList(3)
+  const pageNo = router.query.pageNo ? Number(router.query.pageNo) : 1
+  const [postList, lastPostNo] = useGetPostList(pageNo, 3)
 
   return (
     <Layout>
       {!postList && <LoadingSpinner/>}
       {postList &&
-      postList.map((post, index) => {
-        return (
-          <PostList
-            key={post.post_no}
-            title={post.post_title}
-            subTitle={post.post_subtitle}
-            date={post.post_ins_date}
-            onClick={()=>{
-              router.push({pathname:"/post/[postNo]",query:{postNo:post.post_no}})
-            }}
-          />
-        )
-      })
+			<>
+        {
+          postList.map((post, index) => {
+            return (
+              <PostList
+                key={post.post_no}
+                title={post.post_title}
+                subTitle={post.post_subtitle}
+                date={post.post_ins_date}
+                onClick={() => {
+                  router.push({pathname: "/post/[postNo]", query: {postNo: post.post_no}})
+                }}
+              />
+            )
+          })
+        }
+        <PostPagination pageNo={pageNo} lastPostNo={lastPostNo}/>
+			</>
       }
-      <Box display={"flex"} justifyContent={"center"}>
-        <Pagination count={lastPostNo} color="primary" onChange={(event, pageNo) => {
-          setPostListPageNo(pageNo)
-        }} sx={{
-          display: postList ? "block" : "none"
-        }}/>
-      </Box>
+
     </Layout>
   )
 

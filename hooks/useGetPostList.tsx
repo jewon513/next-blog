@@ -3,11 +3,10 @@ import {PostListResult} from "../query/post";
 import useSWR from 'swr'
 import {fetcher} from "../lib/utils";
 
-const useGetPostList = (pagePerCnt)=>{
+const useGetPostList = (pageNo, pagePerCnt)=>{
 
-  const [pageNo, setPageNo] = useState(1)
   const [lastPageNo, setLastPageNo] = useState(0)
-  const {data, error} = useSWR<PostListResult>(`/api/post?pageNo=${pageNo}&pagePerCnt=${pagePerCnt}`, fetcher)
+  const {data, error} = useSWR<PostListResult>(`/api/post?pageNo=${pageNo}&pagePerCnt=${pagePerCnt}`, fetcher, {revalidateOnFocus: false})
 
   const getLastPageNo = (pagePerCnt, cnt)=>{
     return Math.ceil(cnt/pagePerCnt)
@@ -19,7 +18,7 @@ const useGetPostList = (pagePerCnt)=>{
     }
   },[data, error])
 
-  return [data?.list, lastPageNo, setPageNo] as const
+  return [data?.list, lastPageNo] as const
 }
 
 export default useGetPostList

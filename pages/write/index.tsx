@@ -9,13 +9,4 @@ const WritePage = ()=>{
   )
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async(appContext)=>{
-
-  return {
-    props : {
-
-    }
-  }
-})
-
 export default WritePage
