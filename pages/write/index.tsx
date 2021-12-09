@@ -3,16 +3,18 @@ import wrapper from "../../store";
 
 const PostWriteDynamic = dynamic(()=> import("../../modules/PostWrite"),{ssr:false})
 
-const WritePage = ({test})=>{
+const WritePage = ()=>{
   return (
-    <PostWriteDynamic test={test}/>
+    <PostWriteDynamic/>
   )
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async(appContext)=>{
 
   return {
-    props : {test:"test"}
+    props : {
+
+    }
   }
 })
 
