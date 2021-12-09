@@ -1,8 +1,6 @@
 import dynamic from "next/dynamic";
 import wrapper from "../../store";
-import {useRouter} from "next/router";
-import {useEffect} from "react";
-import {PostResult, selectPost} from "../../query/post";
+import {PostEntity, selectPost} from "../../query/post";
 
 const PostWriteDynamic = dynamic(()=> import("../../modules/PostWrite"),{ssr:false})
 
@@ -15,7 +13,7 @@ const WritePage = ({post})=>{
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({query, req}) => {
-  let postData: PostResult = {
+  let postData: PostEntity = {
     post_title:"",
     post_subtitle:"",
     post_contents:"",

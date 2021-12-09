@@ -1,29 +1,39 @@
 import {query} from "../lib/db";
 import {dataConvertToJson} from "../lib/utils";
 
-export type PostResult = {
+export type PostEntity = {
   post_no: number,
-  post_title: string,
-  post_subtitle: string,
-  post_contents?: string,
-  post_user_no: number,
-  post_ins_date: string
-}
-
-export type PostListResult = {
-  list: Array<PostResult>
-  cnt: number
-}
-
-export type PostParam = {
-  post_no?: number,
   post_title: string,
   post_subtitle: string,
   post_contents: string,
   post_user_no: number,
+  post_ins_date: string
 }
 
-export const insertPost = async ({post_contents, post_subtitle, post_title, post_user_no}) => {
+export type PostType = {
+  post_no: number,
+  post_title: string,
+  post_subtitle: string,
+  post_contents: string,
+  post_user_name: number,
+  post_ins_date: string
+}
+
+export type PostListType = {
+  post_no: number,
+  post_title: string,
+  post_subtitle: string,
+  post_user_name: string,
+  post_ins_date: string
+}
+
+export type PostListResult = {
+  list: Array<PostListType>
+  cnt: number
+}
+
+export type InsertPostParamType = Pick<PostEntity, "post_title"|"post_subtitle"|"post_contents"|"post_user_no">
+export const insertPost = async ({post_contents, post_subtitle, post_title, post_user_no}: InsertPostParamType) => {
   const insertResult = await query(`
       INSERT INTO post_basic (post_title,
                               post_subtitle,
@@ -37,7 +47,8 @@ export const insertPost = async ({post_contents, post_subtitle, post_title, post
   return dataConvertToJson(insertResult)
 }
 
-export const updatePost = async ({post_no, post_contents, post_subtitle, post_title}) => {
+export type UpdatePostParamType = Pick<PostEntity, "post_title"|"post_subtitle"|"post_contents"|"post_no">
+export const updatePost = async ({post_no, post_contents, post_subtitle, post_title}: UpdatePostParamType) => {
   const insertResult = await query(`
       UPDATE post_basic
       SET 

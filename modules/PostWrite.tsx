@@ -10,6 +10,8 @@ import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import CodeIcon from '@mui/icons-material/Code';
+import LoadingButton from '@mui/lab/LoadingButton';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import {EditorContent, useEditor} from "@tiptap/react";
 import StarterKit from '@tiptap/starter-kit'
@@ -21,11 +23,12 @@ import lowlight from 'lowlight'
 import {useRouter} from "next/router";
 import useInput from "../hooks/useInput";
 import usePostWrite from "../hooks/usePostWrite";
-import {PostParam, PostResult} from "../query/post";
+import {PostEntity} from "../query/post";
 import Layout from "../components/Layout";
+import CreateIcon from "@mui/icons-material/Create";
 
 
-const PostWrite = ({post}:{post:PostResult})=>{
+const PostWrite = ({post}:{post:PostEntity})=>{
 
   const router = useRouter()
   const [title, setTitle, onTitleChange] = useInput(post.post_title);
@@ -68,11 +71,11 @@ const PostWrite = ({post}:{post:PostResult})=>{
     }
   }
 
-  const postWrite = usePostWrite()
+  const [postWrite, postWriteState] = usePostWrite()
   const submit = () => {
     const html = document.getElementsByClassName("ProseMirror")[0].innerHTML
     const contents = html ? html : ""
-    const param: PostParam = {
+    const param: Partial<PostEntity> = {
       post_no : post.post_no,
       post_user_no: user.userData.user_no,
       post_contents: contents,
@@ -80,7 +83,6 @@ const PostWrite = ({post}:{post:PostResult})=>{
       post_title: title
     }
     postWrite(param).then(res => {
-      console.log(res)
       router.replace("/")
     }).catch(e => {
       console.error(e)
@@ -152,14 +154,28 @@ const PostWrite = ({post}:{post:PostResult})=>{
         marginTop: "15px"
       }}>
         <Grid item={true}>
-          <Button variant={"outlined"} onClick={() => {
-          }} color={"warning"}>Cancel</Button>
-          <Button variant={"outlined"}
-                  color={"primary"}
-                  onClick={submit}
-                  sx={{
-                    marginLeft: "8px"
-                  }}>Submit</Button>
+          <LoadingButton
+            variant={"outlined"}
+            onClick={() => {
+              router.back()
+            }}
+            startIcon={<CancelIcon />}
+            color={"warning"}
+          >
+            Cancel
+          </LoadingButton>
+          <LoadingButton
+            variant={"outlined"}
+            color={"primary"}
+            onClick={submit}
+            loading={postWriteState === "loading"}
+            startIcon={<CreateIcon />}
+            sx={{
+              marginLeft: "8px"
+            }}
+          >
+            Submit
+          </LoadingButton>
         </Grid>
       </Grid>
     </Layout>

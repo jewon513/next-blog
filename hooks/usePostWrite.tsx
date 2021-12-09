@@ -1,13 +1,13 @@
-import {PostParam} from "../query/post";
 import axios from "axios";
 import {ApiState} from "../lib/types";
 import {useState} from "react";
+import {PostEntity} from "../query/post";
 
 const usePostWrite = ()=>{
 
   const [state, setState] = useState<ApiState>("idle")
 
-  const submit = async (param:PostParam)=>{
+  const submit = async (param:Partial<PostEntity>)=>{
     try{
       if(state !== "loading"){
         setState("loading")
@@ -21,7 +21,7 @@ const usePostWrite = ()=>{
     }
   }
 
-  return submit
+  return [submit, state] as const
 
 }
 

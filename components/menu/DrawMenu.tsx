@@ -1,5 +1,4 @@
 import {ListItem, ListItemIcon, ListItemText} from "@mui/material";
-import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import CreateIcon from '@mui/icons-material/Create';

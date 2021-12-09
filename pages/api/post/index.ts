@@ -2,7 +2,6 @@ import {NextApiHandler} from "next";
 import {
   deletePost,
   insertPost,
-  PostParam,
   selectPost,
   selectPostCnt,
   selectPostList,
@@ -12,48 +11,51 @@ import {verifyAuth} from "../../../lib/auth";
 
 const handler:NextApiHandler = async(req, res)=>{
   try{
-    const {query} = req
+    const {query, body} = req
+    const authResult = await verifyAuth({request:req})
     switch (req.method){
       case 'POST' :
-        const authResult = await verifyAuth({request:req})
         if(authResult.status === 200){
-          const param = req.body as PostParam
-          if(param.post_no){
-            const result = await updatePost(req.body)
-            return res.json(result)
+          if(body.post_no){
+            const result = await updatePost(body)
+            res.json(result)
           }else{
-            const result = await insertPost(req.body)
-            return res.json(result)
+            const result = await insertPost(body)
+            res.json(result)
           }
         }else{
-          return res.status(401).json(authResult.error)
+          res.status(401).json(authResult.error)
         }
         break;
       case 'GET' :
         if(query?.postNo){
           const result = await selectPost(query.postNo)
-          return res.json(result)
+          res.json(result)
         }else if(query?.pageNo && query?.pagePerCnt){
           const result = await selectPostList({pageNo:query.pageNo, pagePerCnt:query.pagePerCnt})
           const {cnt} = await selectPostCnt()
-          return res.json({
+          res.json({
             list:result,
             cnt:cnt
           })
         }else{
-          return res.status(400).json({
+          res.status(400).json({
             error: { message: 'Missing required parameters' },
           })
         }
         break;
       case 'DELETE' :
-        if(query?.postNo){
-          const result = await deletePost(query?.postNo)
-          return res.json(result)
+        if(authResult.status === 200){
+          if(query?.postNo){
+            const result = await deletePost(query?.postNo)
+            res.json(result)
+          }else{
+            res.status(400).json({
+              error: { message: 'Missing required parameters' },
+            })
+          }
         }else{
-          return res.status(400).json({
-            error: { message: 'Missing required parameters' },
-          })
+          res.status(401).json(authResult.error)
         }
         break;
       default :

@@ -24,7 +24,7 @@ const DrawerList = ()=>{
     role: ["all", "user", "admin"]
   },{
     txt:"Write",
-    link:"/write",
+    link:"/write/new",
     role: ["admin"]
   }]
 
