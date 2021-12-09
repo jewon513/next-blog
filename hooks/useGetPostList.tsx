@@ -1,10 +1,7 @@
 import {useEffect, useState} from "react";
-import {ApiState} from "../lib/types";
-import axios from "axios";
-import {PostListResult, PostResult} from "../query/post";
+import {PostListResult} from "../query/post";
 import useSWR from 'swr'
-
-const fetcher = url => axios.get(url).then(res => res.data)
+import {fetcher} from "../lib/utils";
 
 const useGetPostList = (pagePerCnt)=>{
 

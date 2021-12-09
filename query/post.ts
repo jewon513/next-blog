@@ -1,4 +1,5 @@
 import {query} from "../lib/db";
+import {dataConvertToJson} from "../lib/utils";
 
 export type PostResult = {
   post_no: number,
@@ -32,7 +33,7 @@ export const insertPost = async ({post_contents, post_subtitle, post_title, post
               ?,
               ?);
   `, [post_title, post_subtitle, post_contents, post_user_no])
-  return insertResult
+  return dataConvertToJson(insertResult)
 }
 
 export const selectPostList = async ({pageNo, pagePerCnt}) => {
@@ -48,7 +49,7 @@ export const selectPostList = async ({pageNo, pagePerCnt}) => {
                          ON a.post_user_no = b.user_no
       ORDER BY a.post_ins_date DESC LIMIT ?, ?;
   `, [startNo, Number(pagePerCnt)])
-  return selectResult
+  return dataConvertToJson(selectResult, true)
 }
 
 export const selectPost = async (postNo) => {
@@ -64,8 +65,7 @@ export const selectPost = async (postNo) => {
                          on a.post_user_no = b.user_no
       WHERE a.post_no = ?;
   `, [postNo])
-  const result = Array.isArray(selectResult) ? selectResult[0] : undefined
-  return result
+  return dataConvertToJson(selectResult)
 }
 
 export const selectPostCnt = async () => {
@@ -73,8 +73,7 @@ export const selectPostCnt = async () => {
       SELECT count(*) as cnt
       FROM post_basic;
   `)
-  const result = Array.isArray(selectResult) ? selectResult[0].cnt : undefined
-  return result
+  return dataConvertToJson(selectResult)
 }
 
 export const deletePost = async (postNo) => {

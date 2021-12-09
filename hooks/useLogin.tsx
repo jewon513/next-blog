@@ -13,7 +13,7 @@ const useLogin = ()=>{
   const login = async(param:{user_id:string, user_pw:string})=>{
     if(state !== "loading"){
       setState("loading")
-      axios.post<ApiResult<LoginResult>>("api/login",param).then(res=>{
+      axios.post<ApiResult<LoginResult>>("/api/login",param).then(res=>{
         const {data} = res
         alert(data.message)
         switch (data.code){

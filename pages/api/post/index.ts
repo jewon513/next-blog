@@ -19,7 +19,7 @@ const handler:NextApiHandler = async(req, res)=>{
         return res.json(result)
       }else if(query?.pageNo && query?.pagePerCnt){
         const result = await selectPostList({pageNo:query.pageNo, pagePerCnt:query.pagePerCnt})
-        const cnt = await selectPostCnt()
+        const {cnt} = await selectPostCnt()
         return res.json({
           list:result,
           cnt:cnt
