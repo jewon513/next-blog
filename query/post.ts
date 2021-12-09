@@ -16,13 +16,14 @@ export type PostListResult = {
 }
 
 export type PostParam = {
+  post_no?: number,
   post_title: string,
   post_subtitle: string,
   post_contents: string,
   post_user_no: number,
 }
 
-export const insertPost = async ({post_contents, post_subtitle, post_title, post_user_no}: PostParam) => {
+export const insertPost = async ({post_contents, post_subtitle, post_title, post_user_no}) => {
   const insertResult = await query(`
       INSERT INTO post_basic (post_title,
                               post_subtitle,
@@ -33,6 +34,18 @@ export const insertPost = async ({post_contents, post_subtitle, post_title, post
               ?,
               ?);
   `, [post_title, post_subtitle, post_contents, post_user_no])
+  return dataConvertToJson(insertResult)
+}
+
+export const updatePost = async ({post_no, post_contents, post_subtitle, post_title}) => {
+  const insertResult = await query(`
+      UPDATE post_basic
+      SET 
+          post_title = ?,
+          post_subtitle = ?,
+          post_contents = ?
+      WHERE post_no = ?
+  `, [post_title, post_subtitle, post_contents, post_no])
   return dataConvertToJson(insertResult)
 }
 
@@ -78,7 +91,9 @@ export const selectPostCnt = async () => {
 
 export const deletePost = async (postNo) => {
   const deleteResult = await query(`
-    DELETE FROM post_basic WHERE post_no = ?
-  `,[postNo])
-  return deleteResult
+      DELETE
+      FROM post_basic
+      WHERE post_no = ?
+  `, [postNo])
+  return dataConvertToJson(deleteResult)
 }

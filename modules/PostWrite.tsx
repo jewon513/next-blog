@@ -16,24 +16,21 @@ import StarterKit from '@tiptap/starter-kit'
 import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import Code from '@tiptap/extension-code'
-import CodeBlock from '@tiptap/extension-code-block'
 import lowlight from 'lowlight'
 
 import {useRouter} from "next/router";
 import useInput from "../hooks/useInput";
 import usePostWrite from "../hooks/usePostWrite";
-import {PostParam} from "../query/post";
+import {PostParam, PostResult} from "../query/post";
 import Layout from "../components/Layout";
 
 
-const PostWrite = ()=>{
+const PostWrite = ({post}:{post:PostResult})=>{
 
   const router = useRouter()
-  const [title, setTitle, onTitleChange] = useInput("");
-  const [subtitle, setSubtitle, onSubtitleChange] = useInput("");
+  const [title, setTitle, onTitleChange] = useInput(post.post_title);
+  const [subtitle, setSubtitle, onSubtitleChange] = useInput(post.post_subtitle);
   const user = useSelector(state => state.user)
-  const theme = useSelector(state=>state.common.mode)
 
   const editor = useEditor({
     extensions: [
@@ -53,15 +50,13 @@ const PostWrite = ()=>{
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       }),
-      Code,
-      CodeBlock,
       CodeBlockLowlight
         .configure({
           lowlight,
           defaultLanguage:"javascript"
       }),
     ],
-    content: ``,
+    content: post.post_contents,
   })
 
   const addImage = () =>{
@@ -78,6 +73,7 @@ const PostWrite = ()=>{
     const html = document.getElementsByClassName("ProseMirror")[0].innerHTML
     const contents = html ? html : ""
     const param: PostParam = {
+      post_no : post.post_no,
       post_user_no: user.userData.user_no,
       post_contents: contents,
       post_subtitle: subtitle,
