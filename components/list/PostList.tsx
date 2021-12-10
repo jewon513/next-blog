@@ -1,6 +1,6 @@
 import {Box, Button, Grid, Typography} from "@mui/material";
-import dayjs from "dayjs"
 import {MouseEventHandler} from "react";
+import dayjs from "../../lib/dayjs";
 
 const PostList = ({title, subTitle, date, onClick}:{title:string, subTitle:string, date:string, onClick:MouseEventHandler<Element>})=>{
 

@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import dayjs from "dayjs";
+import dayjs from "../../lib/dayjs";
 
 const PostViewHeader = ({postTitle, postInsDate}) => {
 
