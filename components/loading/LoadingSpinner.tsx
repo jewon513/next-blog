@@ -9,7 +9,6 @@ const LoadingSpinner = ()=>{
     }}>
       <CircularProgress />
     </Box>
-
   )
 }
 

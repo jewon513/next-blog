@@ -10,7 +10,7 @@ const MainList = () => {
 
   const router = useRouter();
   const pageNo = router.query.pageNo ? Number(router.query.pageNo) : 1
-  const [postList, lastPostNo] = useGetPostList(pageNo, 3)
+  const [postList, isValidating, lastPostNo] = useGetPostList(pageNo, 3)
 
   return (
     <Layout>
@@ -32,7 +32,7 @@ const MainList = () => {
             )
           })
         }
-        <PostPagination pageNo={pageNo} lastPostNo={lastPostNo}/>
+				<PostPagination pageNo={pageNo} lastPostNo={lastPostNo}/>
 			</>
       }
 
