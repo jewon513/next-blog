@@ -18,7 +18,7 @@ import StarterKit from '@tiptap/starter-kit'
 import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import lowlight from 'lowlight'
+import lowlight from "lowlight";
 
 import {useRouter} from "next/router";
 import useInput from "../hooks/useInput";
@@ -26,6 +26,8 @@ import usePostWrite from "../hooks/usePostWrite";
 import {PostEntity} from "../query/post";
 import Layout from "../components/Layout";
 import CreateIcon from "@mui/icons-material/Create";
+import {TextStyle} from "@tiptap/extension-text-style";
+import useTipTapEditor from "../hooks/useTipTapEditor";
 
 
 const PostWrite = ({post}:{post:PostEntity})=>{
@@ -35,32 +37,7 @@ const PostWrite = ({post}:{post:PostEntity})=>{
   const [subtitle, setSubtitle, onSubtitleChange] = useInput(post.post_subtitle);
   const user = useSelector(state => state.user)
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Image.extend({
-        addAttributes(){
-          return{
-            class:{
-              default: null
-            },
-            src:{
-              default: null
-            },
-          }
-        }
-      }),
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      }),
-      CodeBlockLowlight
-        .configure({
-          lowlight,
-          defaultLanguage:"javascript"
-      }),
-    ],
-    content: post.post_contents,
-  })
+  const editor = useTipTapEditor(post.post_contents, true)
 
   const addImage = () =>{
     const url = window.prompt('URL')
@@ -73,7 +50,8 @@ const PostWrite = ({post}:{post:PostEntity})=>{
 
   const [postWrite, postWriteState] = usePostWrite()
   const submit = () => {
-    const html = document.getElementsByClassName("ProseMirror")[0].innerHTML
+    const html = editor?.getHTML()
+    console.log(editor?.getJSON())
     const contents = html ? html : ""
     const param: Partial<PostEntity> = {
       post_no : post.post_no,
