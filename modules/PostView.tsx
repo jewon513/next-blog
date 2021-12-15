@@ -22,10 +22,8 @@ const PostView = ()=> {
   const editor = useTipTapEditor("", false)
 
   useEffect(()=>{
-    if(editor){
-      if(post){
-        editor.chain().setContent(post.post_contents).run()
-      }
+    if(editor && post){
+      editor.chain().setContent(post.post_contents).run()
     }
   },[post, editor])
 
