@@ -37,7 +37,6 @@ const PostView = ()=> {
 						<Box>
 							<PostViewHeader postTitle={post.post_title} postInsDate={post.post_ins_date}/>
               <EditorContent className={"editor__content"} editor={editor}/>
-							{/*<Box className={"editor__content"} dangerouslySetInnerHTML={{__html: post.post_contents as string}}/>*/}
 							<PostViewBottom/>
             </Box>
           </Fade>
