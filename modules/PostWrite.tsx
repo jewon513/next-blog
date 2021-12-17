@@ -28,6 +28,8 @@ import Layout from "../components/Layout";
 import CreateIcon from "@mui/icons-material/Create";
 import {TextStyle} from "@tiptap/extension-text-style";
 import useTipTapEditor from "../hooks/useTipTapEditor";
+import {LegacyRef, useRef} from "react";
+import axios from "axios";
 
 
 const PostWrite = ({post}:{post:PostEntity})=>{
@@ -40,12 +42,15 @@ const PostWrite = ({post}:{post:PostEntity})=>{
   const editor = useTipTapEditor(post.post_contents, true)
 
   const addImage = () =>{
-    const url = window.prompt('URL')
-
-    if (url) {
-      let temp = `<img src='${url}' class="insertImg"/>`
-      editor?.commands.insertContent(temp)
+    if(inputRef.current){
+      inputRef.current.click()
     }
+    // const url = window.prompt('URL')
+    //
+    // if (url) {
+    //   let temp = `<img src='${url}' class="insertImg"/>`
+    //   editor?.commands.insertContent(temp)
+    // }
   }
 
   const [postWrite, postWriteState] = usePostWrite()
@@ -64,6 +69,18 @@ const PostWrite = ({post}:{post:PostEntity})=>{
       router.replace("/")
     }).catch(e => {
       console.error(e)
+    })
+  }
+
+  const inputRef = useRef<HTMLInputElement>();
+  const handleImageUpd = (e)=>{
+    const files = e.target.files
+    const body = new FormData();
+    body.append("image", files[0])
+    axios.post("/api/sample",body,{
+      headers: { 'content-type': 'multipart/form-data' }
+    }).then(res=>{
+      console.log(res)
     })
   }
 
@@ -156,6 +173,16 @@ const PostWrite = ({post}:{post:PostEntity})=>{
           </LoadingButton>
         </Grid>
       </Grid>
+
+      <input
+        id="hiddenInput"
+        style={{display: "none"}}
+        type="file"
+        accept="image/*"
+        multiple={true}
+        ref={inputRef as LegacyRef<any>}
+        onChange={handleImageUpd}
+      />
     </Layout>
   )
 }
