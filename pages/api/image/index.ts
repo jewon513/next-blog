@@ -1,7 +1,7 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import multer from "multer"
 import app from "../../../lib/firebase";
-import dayjs from "../../../lib/dayjs";
+import tz from "../../../lib/dayjs";
 import handler from "../../../lib/handler";
 
 
@@ -11,7 +11,7 @@ const upload = multer({storage: storage})
 handler.use(upload.single("image"))
 
 handler.post("/api/image", async (req, res)=>{
-  const filename = `temp/${dayjs().format()}_${req["file"].originalname}`
+  const filename = `temp/${tz().format()}_${req["file"].originalname}`
   const storage = getStorage(app)
   const imgRef = ref(storage, filename)
   const result = await uploadBytes(imgRef, req["file"].buffer)

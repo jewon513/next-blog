@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import dayjs from "../../lib/dayjs";
+import tz from "../../lib/dayjs";
 
 const PostViewHeader = ({postTitle, postInsDate}) => {
 
@@ -10,7 +10,7 @@ const PostViewHeader = ({postTitle, postInsDate}) => {
           {postTitle}
         </Typography>
         <Typography variant={"subtitle2"} align={"center"} color={"gray"}>
-          {dayjs(postInsDate).format("YYYY-MM-DD")}
+          {tz(postInsDate).format("YYYY-MM-DD")}
         </Typography>
       </Box>
     </>

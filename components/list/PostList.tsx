@@ -1,6 +1,6 @@
 import {Box, Button, Fade, Grid, Grow, Typography} from "@mui/material";
 import {MouseEventHandler} from "react";
-import dayjs from "../../lib/dayjs";
+import tz from "../../lib/dayjs";
 
 const PostList = ({title, subTitle, date, index, onClick}:{title:string, subTitle:string, date:string, index:number, onClick:MouseEventHandler<Element>})=>{
 
@@ -19,7 +19,7 @@ const PostList = ({title, subTitle, date, index, onClick}:{title:string, subTitl
         <Grid container={true}>
           <Grid item={true} xs={12}>
             <Typography variant={"subtitle2"} color={"gray"}>
-              {dayjs(date).format("YYYY-MM-DD")}
+              {tz(date).format("YYYY-MM-DD")}
             </Typography>
           </Grid>
           <Grid item={true} xs={12}>
