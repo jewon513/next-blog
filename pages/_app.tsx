@@ -9,7 +9,7 @@ import {useDispatch} from "react-redux";
 import {verifyAuth} from "../lib/auth";
 import {userAction} from "../store/modules/user";
 import {LoginResult} from "../query/user";
-import Head from "next/Head"
+import Head from "next/head"
 
 function MyApp({ Component, pageProps }: AppProps) {
 
