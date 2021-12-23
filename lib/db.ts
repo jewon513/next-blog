@@ -18,7 +18,7 @@ export const query = async(
   try{
     const results = await db.query(q, values)
     await db.end()
-    return results
+    return results as any
   }catch (e: any){
     throw Error(e.message)
   }

@@ -44,7 +44,6 @@ const PostWrite = ({post}:{post:PostEntity})=>{
   const [postWrite, postWriteState] = usePostWrite()
   const submit = () => {
     const html = editor?.getHTML()
-    console.log(editor?.getJSON())
     const contents = html ? html : ""
     const param: Partial<PostEntity> = {
       post_no : post.post_no,
@@ -53,11 +52,7 @@ const PostWrite = ({post}:{post:PostEntity})=>{
       post_subtitle: subtitle,
       post_title: title
     }
-    postWrite(param).then(res => {
-      router.replace("/")
-    }).catch(e => {
-      console.error(e)
-    })
+    postWrite(param)
   }
 
   const inputRef = useRef<HTMLInputElement>();

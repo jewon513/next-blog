@@ -2,7 +2,6 @@ import {
   deletePost,
   insertPost,
   selectPost,
-  selectPostCnt,
   selectPostList,
   updatePost
 } from "../../../query/post";
@@ -29,11 +28,9 @@ handler.get("/api/post",async(req, res)=>{
     const result = await selectPost(req.query.postNo)
     res.json(result)
   }else if(req.query?.pageNo && req.query?.pagePerCnt){
-    const result = await selectPostList({pageNo:req.query.pageNo, pagePerCnt:req.query.pagePerCnt})
-    const {cnt} = await selectPostCnt()
+    const {list,cnt} = await selectPostList({pageNo:req.query.pageNo, pagePerCnt:req.query.pagePerCnt})
     res.json({
-      list:result,
-      cnt:cnt
+      list, cnt
     })
   }else{
     res.status(400).json({

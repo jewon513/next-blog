@@ -23,7 +23,7 @@ const PostView = ()=> {
 
   useEffect(() => {
     if (editor && post) {
-      editor.chain().setContent(post.post_contents).run()
+      editor?.chain()?.setContent(post.post_contents)?.run()
     }
   }, [post, editor])
 
@@ -35,7 +35,7 @@ const PostView = ()=> {
 			<Fade in={true} timeout={500}>
 				<Box>
 					<PostViewHeader postTitle={post.post_title} postInsDate={post.post_ins_date}/>
-					<EditorContent className={"editor__content"} editor={editor}/>
+						<EditorContent className={"editor__content"} editor={editor}/>
 					<PostViewBottom/>
 				</Box>
 			</Fade>
