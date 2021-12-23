@@ -3,7 +3,7 @@ import {LoginParam, LoginResult, userSelectByIdAndPw} from "../../../query/user"
 import {ApiResult} from "../../../lib/types";
 import handler from "../../../lib/handler";
 
-handler.post(async(req,res)=>{
+handler.post("/api/login",async(req,res)=>{
   const {user_id, user_pw} = req.body as LoginParam
   const userData = await userSelectByIdAndPw({user_id, user_pw})
   const result: ApiResult<null | LoginResult> = {

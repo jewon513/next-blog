@@ -10,7 +10,7 @@ const upload = multer({storage: storage})
 
 handler.use(upload.single("image"))
 
-handler.post( async (req, res)=>{
+handler.post("/api/image", async (req, res)=>{
   const filename = `temp/${dayjs().format()}_${req["file"].originalname}`
   const storage = getStorage(app)
   const imgRef = ref(storage, filename)
