@@ -20,15 +20,18 @@ const Header = ()=>{
             }}
             alignItems={"center"}>
         <Grid item={true}>
+          <img src={"/bunny-1298864.svg"} style={{
+            height:"30px",
+            width:"30px",
+            marginRight:"4px",
+            marginTop:"4px"
+          }}/>
+        </Grid>
+        <Grid item={true}>
           <Typography variant={"h4"} sx={{
             fontWeight:"bold",
             cursor:"pointer"
           }} onClick={goMain}>
-            <img src={"/bunny-1298864.svg"} style={{
-              height:"30px",
-              width:"30px",
-              marginRight:"4px",
-            }}/>
             TokkI
           </Typography>
         </Grid>

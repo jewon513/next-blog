@@ -9,6 +9,7 @@ import {useDispatch} from "react-redux";
 import {verifyAuth} from "../lib/auth";
 import {userAction} from "../store/modules/user";
 import {LoginResult} from "../query/user";
+import Head from "next/Head"
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -17,6 +18,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider theme={theme}>
+      <Head>
+        <title>TokkI</title>
+        <meta charSet="utf-8"/>
+        <meta name="author" content="Jewon Park"/>
+        <meta name="description" content="Jewon's Blog"/>
+      </Head>
       <Component {...pageProps} />
     </ThemeProvider>
   )
