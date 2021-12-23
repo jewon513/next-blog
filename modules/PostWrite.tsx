@@ -14,11 +14,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import {EditorContent, useEditor} from "@tiptap/react";
-import StarterKit from '@tiptap/starter-kit'
-import TextAlign from "@tiptap/extension-text-align";
-import Image from "@tiptap/extension-image";
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import lowlight from "lowlight";
 
 import {useRouter} from "next/router";
 import useInput from "../hooks/useInput";
@@ -26,7 +21,6 @@ import usePostWrite from "../hooks/usePostWrite";
 import {PostEntity} from "../query/post";
 import Layout from "../components/Layout";
 import CreateIcon from "@mui/icons-material/Create";
-import {TextStyle} from "@tiptap/extension-text-style";
 import useTipTapEditor from "../hooks/useTipTapEditor";
 import {LegacyRef, useRef} from "react";
 import axios from "axios";
@@ -45,12 +39,6 @@ const PostWrite = ({post}:{post:PostEntity})=>{
     if(inputRef.current){
       inputRef.current.click()
     }
-    // const url = window.prompt('URL')
-    //
-    // if (url) {
-    //   let temp = `<img src='${url}' class="insertImg"/>`
-    //   editor?.commands.insertContent(temp)
-    // }
   }
 
   const [postWrite, postWriteState] = usePostWrite()
@@ -77,10 +65,12 @@ const PostWrite = ({post}:{post:PostEntity})=>{
     const files = e.target.files
     const body = new FormData();
     body.append("image", files[0])
-    axios.post("/api/sample",body,{
+    axios.post("/api/image",body,{
       headers: { 'content-type': 'multipart/form-data' }
     }).then(res=>{
-      console.log(res)
+      const {data} = res
+      let imgTag = `<img src='${data.url}' data-ref='${data.filename}'/>`
+      editor?.commands.insertContent(imgTag)
     })
   }
 

@@ -1,7 +1,7 @@
 .ProseMirror {
     font-family: 'NotoSansKR';
     color: #222;
-    font-size: 16px;
+    font-size: 1rem;
     overflow-y: auto;
     overflow-X: hidden;
     height: 100%;
