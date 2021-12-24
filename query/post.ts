@@ -42,15 +42,10 @@ export const insertPost = async ({post_contents, post_subtitle, post_title, post
 
 export type UpdatePostParamType = Pick<PostEntity, "post_title"|"post_subtitle"|"post_contents"|"post_no">
 export const updatePost = async ({post_no, post_contents, post_subtitle, post_title}: UpdatePostParamType) => {
-  const insertResult = await query(`
-      UPDATE post_basic
-      SET 
-          post_title = ?,
-          post_subtitle = ?,
-          post_contents = ?
-      WHERE post_no = ?
-  `, [post_title, post_subtitle, post_contents, post_no])
-  return dataConvertToJson(insertResult)
+  const updateResult = await query(`
+      CALL usp_mod_post_basic(?,?,?,?)
+  `, [post_no, post_title, post_subtitle, post_contents])
+  return dataConvertToJson(updateResult[0])
 }
 
 export const selectPostList = async ({pageNo, pagePerCnt}) => {
@@ -72,9 +67,7 @@ export const selectPost = async (postNo) => {
 
 export const deletePost = async (postNo) => {
   const deleteResult = await query(`
-      DELETE
-      FROM post_basic
-      WHERE post_no = ?
+    CALL usp_del_post_basic(?);
   `, [postNo])
-  return dataConvertToJson(deleteResult)
+  return dataConvertToJson(deleteResult[0])
 }
