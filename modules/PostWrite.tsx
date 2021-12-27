@@ -72,7 +72,7 @@ const PostWrite = ({post}:{post:PostType})=>{
   }
 
   const [tag, setTag, onTagChange] = useInput('')
-  const [tagList, setTagList] = useState(post.post_tags !== "" ? post.post_tags.split(",") : [])
+  const [tagList, setTagList] = useState((post.post_tags && post.post_tags !== "" ) ? post.post_tags.split(",") : [])
 
   return (
     <Layout>
