@@ -34,9 +34,10 @@ const PostList = ({title, subTitle, date, index, tags, onClick}:{title:string, s
           </Grid>
           {tags &&
             <Grid item={true} xs={12}>
-              {tags.split(",").map(tag => {
+              {tags.split(",").map((tag, index) => {
                 return (
                   <Chip
+                    key={index}
                     sx={{
                       marginRight: "4px",
                       marginBottom: "4px"
