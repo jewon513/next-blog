@@ -25,6 +25,7 @@ const MainList = () => {
                   subTitle={post.post_subtitle}
                   date={post.post_ins_date}
                   index={index}
+                  tags={post.post_tags}
                   onClick={() => {
                     router.push({pathname: "/post/[postNo]", query: {postNo: post.post_no}})
                   }}

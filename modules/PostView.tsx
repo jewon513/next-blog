@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import PostViewHeader from "../components/post/PostViewHeader";
-import {Box, Fade} from "@mui/material";
+import {Box, Chip, Fade} from "@mui/material";
 import useSWR from "swr";
 import {fetcher} from "../lib/utils";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
@@ -35,7 +35,27 @@ const PostView = ()=> {
 			<Fade in={true} timeout={500}>
 				<Box>
 					<PostViewHeader postTitle={post.post_title} postInsDate={post.post_ins_date}/>
+          <Box paddingY={2}>
 						<EditorContent className={"editor__content"} editor={editor}/>
+          </Box>
+          {post.post_tags &&
+            <Box>
+              {post.post_tags.split(",").map(tag => {
+                return (
+                  <Chip
+                    sx={{
+                      marginRight: "4px",
+                      marginBottom: "4px"
+                    }}
+                    label={tag}
+                    size={"small"}
+                    variant={"outlined"}
+                    clickable={true}
+                  />
+                )
+              })}
+            </Box>
+          }
 					<PostViewBottom/>
 				</Box>
 			</Fade>

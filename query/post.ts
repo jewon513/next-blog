@@ -1,7 +1,7 @@
-import {query} from "../lib/db";
+import {db, query} from "../lib/db";
 import {dataConvertToJson} from "../lib/utils";
 
-export type PostEntity = {
+export type Post = {
   post_no: number,
   post_title: string,
   post_subtitle: string,
@@ -15,8 +15,9 @@ export type PostType = {
   post_title: string,
   post_subtitle: string,
   post_contents: string,
-  post_user_name: number,
-  post_ins_date: string
+  post_user_name: string,
+  post_ins_date: string,
+  post_tags: string
 }
 
 export type PostListType = {
@@ -24,7 +25,8 @@ export type PostListType = {
   post_title: string,
   post_subtitle: string,
   post_user_name: string,
-  post_ins_date: string
+  post_ins_date: string,
+  post_tags: string
 }
 
 export type PostListResult = {
@@ -32,20 +34,59 @@ export type PostListResult = {
   cnt: number
 }
 
-export type InsertPostParamType = Pick<PostEntity, "post_title"|"post_subtitle"|"post_contents"|"post_user_no">
-export const insertPost = async ({post_contents, post_subtitle, post_title, post_user_no}: InsertPostParamType) => {
-  const insertResult = await query(`
-    CALL usp_add_post_basic(?,?,?,?)
+export type InsertPostParamType = Pick<Post, "post_title"|"post_subtitle"|"post_contents"|"post_user_no"> & {post_tag_list?: string[]}
+export const insertPost = async ({post_contents, post_subtitle, post_title, post_user_no, post_tag_list}: InsertPostParamType) => {
+  // insert Post...
+  const postInsertResult = await db.query<any>(`
+    CALL usp_add_post_basic(?,?,?,?);
   `, [post_title, post_subtitle, post_contents, post_user_no])
-  return dataConvertToJson(insertResult[0])
+  const lastInsertPk =  postInsertResult[0][0].result
+
+  // insert Post_Tag...
+  if(lastInsertPk > 0 && post_tag_list && post_tag_list.length > 0){
+    for (let i = 0; i < post_tag_list.length; i++) {
+      const postTagInsertResult = await db.query<any>(`
+        CALL usp_add_post_tag(?,?);
+      `,[lastInsertPk, post_tag_list[i]])
+    }
+  }
+  await db.end();
+  return {result:1}
 }
 
-export type UpdatePostParamType = Pick<PostEntity, "post_title"|"post_subtitle"|"post_contents"|"post_no">
-export const updatePost = async ({post_no, post_contents, post_subtitle, post_title}: UpdatePostParamType) => {
-  const updateResult = await query(`
-      CALL usp_mod_post_basic(?,?,?,?)
+export type UpdatePostParamType = Pick<Post, "post_title"|"post_subtitle"|"post_contents"|"post_no"> & {post_tag_list?: string[]}
+export const updatePost = async ({post_no, post_contents, post_subtitle, post_title, post_tag_list}: UpdatePostParamType) => {
+  // update Post...
+  const updateResult = await db.query<any>(`
+    CALL usp_mod_post_basic(?,?,?,?);
   `, [post_no, post_title, post_subtitle, post_contents])
-  return dataConvertToJson(updateResult[0])
+
+  // select prev Post_Tag..
+  const tagSelectResult = await db.query<any>(`
+    CALL usp_get_list_post_tag(?);
+  `,[post_no])
+
+  // insert Post_Tag..
+  if(post_no > 0 && post_tag_list && post_tag_list.length > 0){
+    for (let i = 0; i < post_tag_list.length; i++) {
+      const postTagInsertResult = await db.query<any>(`
+        CALL usp_add_post_tag(?,?);
+      `,[post_no, post_tag_list[i]])
+    }
+
+    if(tagSelectResult[0].length > 0){
+      const removeTagList =  tagSelectResult[0].filter(tag=>{
+        return !post_tag_list.includes(tag.tag_name)
+      })
+      for (let i = 0; i < removeTagList.length; i++) {
+        const postTagDeleteResult = await db.query<any>(`
+          CALL usp_del_post_tag(?, ?);
+        `,[removeTagList[i].post_no, removeTagList[i].tag_no])
+      }
+    }
+  }
+  await db.end();
+  return {result:1}
 }
 
 export const selectPostList = async ({pageNo, pagePerCnt}) => {
@@ -69,5 +110,18 @@ export const deletePost = async (postNo) => {
   const deleteResult = await query(`
     CALL usp_del_post_basic(?);
   `, [postNo])
+
+  // select prev Post_Tag...
+  const tagSelectResult = await db.query<any>(`
+    CALL usp_get_list_post_tag(?);
+  `,[postNo])
+
+  // remove Post_tag...
+  for (let i = 0; i < tagSelectResult.length; i++) {
+    const postTagDeleteResult = await db.query<any>(`
+        CALL usp_del_post_tag(?, ?);
+      `,[tagSelectResult[i].post_no, tagSelectResult[i].tag_no])
+  }
+
   return dataConvertToJson(deleteResult[0])
 }

@@ -5,7 +5,7 @@ const PostViewHeader = ({postTitle, postInsDate}) => {
 
   return (
     <>
-      <Box py={"50px"}>
+      <Box paddingY={5}>
         <Typography variant={"h3"} align={"center"}>
           {postTitle}
         </Typography>

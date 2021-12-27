@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import wrapper from "../../store";
-import {PostEntity, selectPost} from "../../query/post";
+import {Post, PostType, selectPost} from "../../query/post";
 
 const PostWriteDynamic = dynamic(()=> import("../../modules/PostWrite"),{ssr:false})
 
@@ -13,13 +13,14 @@ const WritePage = ({post})=>{
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({query, req}) => {
-  let postData: PostEntity = {
+  let postData: PostType = {
     post_title:"",
     post_subtitle:"",
     post_contents:"",
     post_no:0,
     post_ins_date:"",
-    post_user_no:0
+    post_user_name: "",
+    post_tags: ""
   }
   if (Number(query.postNo)) {
     postData = await selectPost(query.postNo)

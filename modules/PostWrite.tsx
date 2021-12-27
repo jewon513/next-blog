@@ -18,15 +18,15 @@ import {EditorContent, useEditor} from "@tiptap/react";
 import {useRouter} from "next/router";
 import useInput from "../hooks/useInput";
 import usePostWrite from "../hooks/usePostWrite";
-import {PostEntity} from "../query/post";
+import {PostType} from "../query/post";
 import Layout from "../components/Layout";
 import CreateIcon from "@mui/icons-material/Create";
 import useTipTapEditor from "../hooks/useTipTapEditor";
-import {LegacyRef, useRef} from "react";
+import {LegacyRef, useRef, useState} from "react";
 import axios from "axios";
 
 
-const PostWrite = ({post}:{post:PostEntity})=>{
+const PostWrite = ({post}:{post:PostType})=>{
 
   const router = useRouter()
   const [title, setTitle, onTitleChange] = useInput(post.post_title);
@@ -45,13 +45,15 @@ const PostWrite = ({post}:{post:PostEntity})=>{
   const submit = () => {
     const html = editor?.getHTML()
     const contents = html ? html : ""
-    const param: Partial<PostEntity> = {
+    const param = {
       post_no : post.post_no,
       post_user_no: user.userData.user_no,
       post_contents: contents,
       post_subtitle: subtitle,
-      post_title: title
+      post_title: title,
+      post_tag_list: tagList
     }
+    console.log(param)
     postWrite(param)
   }
 
@@ -69,6 +71,9 @@ const PostWrite = ({post}:{post:PostEntity})=>{
     })
   }
 
+  const [tag, setTag, onTagChange] = useInput('')
+  const [tagList, setTagList] = useState(post.post_tags !== "" ? post.post_tags.split(",") : [])
+
   return (
     <Layout>
       {/* 상단 제목, 부제목 */}
@@ -78,7 +83,7 @@ const PostWrite = ({post}:{post:PostEntity})=>{
         id="title"
         label="Title"
         fullWidth
-        variant="outlined"
+        variant="standard"
         color={"primary"}
         onChange={onTitleChange}
         value={title}
@@ -88,7 +93,7 @@ const PostWrite = ({post}:{post:PostEntity})=>{
         id="subtitle"
         label="Subtitle"
         fullWidth
-        variant="outlined"
+        variant="standard"
         color={"primary"}
         onChange={onSubtitleChange}
         value={subtitle}
@@ -97,6 +102,7 @@ const PostWrite = ({post}:{post:PostEntity})=>{
       {/* 에디터 */}
       <Box sx={{
         marginTop:"8px",
+        marginBottom:"4px",
         border:"1px solid",
         borderRadius:1,
         borderColor:"grey.400",
@@ -105,6 +111,7 @@ const PostWrite = ({post}:{post:PostEntity})=>{
         <Box
           display={"flex"}
           alignItems={"center"}
+          flexWrap={"wrap"}
           sx={{
             borderRadius:1,
             backgroundColor:"#f7f9fc",
@@ -128,6 +135,45 @@ const PostWrite = ({post}:{post:PostEntity})=>{
           padding:"15px"
         }}/>
       </Box>
+      <Box>
+        {tagList.map((tag, index)=>{
+          return (
+            <Button variant={"outlined"} key={index} sx={{
+              margin:"4px"
+            }}>
+              {tag}
+              <CancelIcon
+                fontSize={"small"}
+                sx={{marginTop:"2px"}}
+                onClick={()=>{
+                  const tempList = [...tagList]
+                  tempList.splice(index,1)
+                  setTagList(tempList)
+                }}
+              />
+            </Button>
+          )
+        })}
+      </Box>
+      <TextField
+        fullWidth
+        margin="dense"
+        id="subtitle"
+        label="Tag"
+        variant="standard"
+        color={"primary"}
+        value={tag}
+        onChange={onTagChange}
+        onKeyDown={(e)=>{
+          if(e.key === "Enter"){
+            console.log("add tag")
+            const tempList = [...tagList]
+            tempList.push(tag)
+            setTagList(tempList)
+            setTag("")
+          }
+        }}
+      />
 
       {/* 하단 버튼 */}
       <Grid container={true} justifyContent={"right"} sx={{

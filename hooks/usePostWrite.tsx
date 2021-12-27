@@ -1,7 +1,7 @@
 import axios from "axios";
 import {ApiState} from "../lib/types";
 import {useEffect, useState} from "react";
-import {PostEntity} from "../query/post";
+import {Post} from "../query/post";
 import {useRouter} from "next/router";
 
 const usePostWrite = ()=>{
@@ -9,7 +9,7 @@ const usePostWrite = ()=>{
   const router = useRouter()
   const [state, setState] = useState<ApiState>("idle")
 
-  const submit = async (param:Partial<PostEntity>)=>{
+  const submit = async (param)=>{
     try{
       if(state !== "loading"){
         setState("loading")
