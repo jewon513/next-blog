@@ -40,9 +40,10 @@ const PostView = ()=> {
           </Box>
           {post.post_tags &&
             <Box>
-              {post.post_tags.split(",").map(tag => {
+              {post.post_tags.split(",").map((tag, index) => {
                 return (
                   <Chip
+                    key={index}
                     sx={{
                       marginRight: "4px",
                       marginBottom: "4px"
