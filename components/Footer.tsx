@@ -48,7 +48,10 @@ const Footer = ()=>{
         </Grid>
       </Box>
 
-      <LoginFormDialog open={loginOpen} handleClose={setLoginClose}/>
+      <LoginFormDialog open={loginOpen} handleClose={(reset)=>{
+        reset()
+        setLoginClose()
+      }}/>
     </>
   )
 }
