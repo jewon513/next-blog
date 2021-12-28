@@ -4,6 +4,7 @@ import {ApiResult, ApiState} from "../lib/types";
 import {LoginResult} from "../query/user";
 import {useDispatch} from "react-redux";
 import {userAction} from "../store/modules/user";
+import {snackActions} from "../store/modules/snack";
 
 const useLogin = ()=>{
 
@@ -15,7 +16,10 @@ const useLogin = ()=>{
       setState("loading")
       axios.post<ApiResult<LoginResult>>("/api/login",param).then(res=>{
         const {data} = res
-        alert(data.message)
+        dispatch(snackActions.setSnack({
+          msg:"Login Success",
+          severity:"success"
+        }))
         switch (data.code){
           case 0 :
             dispatch(userAction.logout())

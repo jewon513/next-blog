@@ -3,10 +3,13 @@ import {ApiState} from "../lib/types";
 import {useEffect, useState} from "react";
 import {Post} from "../query/post";
 import {useRouter} from "next/router";
+import {useDispatch} from "react-redux";
+import {snackActions} from "../store/modules/snack";
 
 const usePostWrite = ()=>{
 
   const router = useRouter()
+  const dispatch = useDispatch()
   const [state, setState] = useState<ApiState>("idle")
 
   const submit = async (param)=>{
@@ -28,11 +31,17 @@ const usePostWrite = ()=>{
 
   useEffect(()=>{
     if(state === "success"){
-      alert("등록 성공")
+      dispatch(snackActions.setSnack({
+        severity:"success",
+        msg:"등록 성공"
+      }))
       router.replace("/")
     }
     if(state === "failure"){
-      alert("등록 실패")
+      dispatch(snackActions.setSnack({
+        severity:"error",
+        msg:"등록 실패"
+      }))
     }
   },[state])
 

@@ -4,10 +4,12 @@ import createSagaMiddleware from "redux-saga"
 import rootSagas from "./sagas";
 import common from "./modules/common";
 import user from "./modules/user"
+import snack from "./modules/snack"
 
 const rootReducer = combineReducers({
   common,
-  user
+  user,
+  snack
 })
 
 const reducer = (state:CombinedState<any>, action:AnyAction)=>{
