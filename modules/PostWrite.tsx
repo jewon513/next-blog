@@ -1,4 +1,4 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import {Box, Chip, Divider, Grid, Stack, TextField} from "@mui/material";
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
@@ -24,11 +24,13 @@ import useTipTapEditor from "../hooks/useTipTapEditor";
 import React, {LegacyRef, useRef, useState} from "react";
 import axios from "axios";
 import {Controller, useForm} from "react-hook-form";
+import {snackActions} from "../store/modules/snack";
 
 
 const PostWrite = ({post}: { post: PostType }) => {
 
   const router = useRouter()
+  const dispatch = useDispatch()
   const {control, handleSubmit, reset, setValue, getValues, setError} = useForm()
   const user = useSelector(state => state.user)
   const editor = useTipTapEditor(post.post_contents, true)
@@ -62,7 +64,13 @@ const PostWrite = ({post}: { post: PostType }) => {
       post_title: data.post_title,
       post_tag_list: tagList
     }
-    console.log(param)
+    if(editor?.getCharacterCount() === 0){
+      dispatch(snackActions.setSnack({
+        severity:"error",
+        msg:"Please enter post contents"
+      }))
+      return false;
+    }
     postWrite(param)
   }
 
