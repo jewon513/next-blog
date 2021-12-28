@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 
-import {Box, Button, Divider, Grid, TextField} from "@mui/material";
+import {Box, Button, Chip, Divider, Grid, Stack, TextField} from "@mui/material";
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import TitleIcon from '@mui/icons-material/Title';
@@ -22,7 +22,7 @@ import {PostType} from "../query/post";
 import Layout from "../components/Layout";
 import CreateIcon from "@mui/icons-material/Create";
 import useTipTapEditor from "../hooks/useTipTapEditor";
-import {LegacyRef, useRef, useState} from "react";
+import React, {LegacyRef, useRef, useState} from "react";
 import axios from "axios";
 
 
@@ -135,26 +135,24 @@ const PostWrite = ({post}:{post:PostType})=>{
           padding:"15px"
         }}/>
       </Box>
-      <Box>
+      <Stack direction="row" spacing={1}>
         {tagList.map((tag, index)=>{
           return (
-            <Button variant={"outlined"} key={index} sx={{
-              margin:"4px"
-            }}>
-              {tag}
-              <CancelIcon
-                fontSize={"small"}
-                sx={{marginTop:"2px"}}
-                onClick={()=>{
-                  const tempList = [...tagList]
-                  tempList.splice(index,1)
-                  setTagList(tempList)
-                }}
-              />
-            </Button>
+            <Chip
+              key={index}
+              label={tag}
+              size={"small"}
+              variant={"outlined"}
+              clickable={true}
+              onDelete={()=>{
+                const tempList = [...tagList]
+                tempList.splice(index,1)
+                setTagList(tempList)
+              }}
+            />
           )
         })}
-      </Box>
+      </Stack>
       <TextField
         fullWidth
         margin="dense"

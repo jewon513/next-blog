@@ -1,4 +1,4 @@
-import {Box, Chip, Fade, Grid, Grow, Typography} from "@mui/material";
+import {Box, Chip, Fade, Grid, Grow, Stack, Typography} from "@mui/material";
 import {MouseEventHandler} from "react";
 import tz from "../../lib/dayjs";
 
@@ -34,21 +34,19 @@ const PostList = ({title, subTitle, date, index, tags, onClick}:{title:string, s
           </Grid>
           {tags &&
             <Grid item={true} xs={12}>
-              {tags.split(",").map((tag, index) => {
-                return (
-                  <Chip
-                    key={index}
-                    sx={{
-                      marginRight: "4px",
-                      marginBottom: "4px"
-                    }}
-                    label={tag}
-                    size={"small"}
-                    variant={"outlined"}
-                    clickable={true}
-                  />
-                )
-              })}
+							<Stack direction="row" spacing={1}>
+                {tags.split(",").map((tag, index) => {
+                  return (
+                    <Chip
+                      key={index}
+                      label={tag}
+                      size={"small"}
+                      variant={"outlined"}
+                      clickable={true}
+                    />
+                  )
+                })}
+              </Stack>
             </Grid>
           }
           <Grid item={true} xs={12}>

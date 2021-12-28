@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import PostViewHeader from "../components/post/PostViewHeader";
-import {Box, Chip, Fade} from "@mui/material";
+import {Box, Chip, Fade, Stack} from "@mui/material";
 import useSWR from "swr";
 import {fetcher} from "../lib/utils";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
@@ -39,15 +39,11 @@ const PostView = ()=> {
 						<EditorContent className={"editor__content"} editor={editor}/>
           </Box>
           {post.post_tags &&
-            <Box>
+					<Stack direction="row" spacing={1}>
               {post.post_tags.split(",").map((tag, index) => {
                 return (
                   <Chip
                     key={index}
-                    sx={{
-                      marginRight: "4px",
-                      marginBottom: "4px"
-                    }}
                     label={tag}
                     size={"small"}
                     variant={"outlined"}
@@ -55,7 +51,7 @@ const PostView = ()=> {
                   />
                 )
               })}
-            </Box>
+          </Stack>
           }
 					<PostViewBottom/>
 				</Box>
