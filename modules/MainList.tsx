@@ -12,32 +12,29 @@ const MainList = () => {
   const [postList, isValidating, lastPostNo] = useGetPostList(pageNo, 3)
 
   return (
-    <Layout>
+    <>
       {!postList && <LoadingSpinner/>}
       {postList &&
-        <>
-          {
-            postList.map((post, index) => {
-              return (
-                <PostList
-                  key={post.post_no}
-                  title={post.post_title}
-                  subTitle={post.post_subtitle}
-                  date={post.post_ins_date}
-                  index={index}
-                  tags={post.post_tags}
-                  onClick={() => {
-                    router.push({pathname: "/post/[postNo]", query: {postNo: post.post_no}})
-                  }}
-                />
-              )
-            })
-          }
-					<PostPagination pageNo={pageNo} lastPostNo={lastPostNo}/>
-        </>
+			<>
+        {
+          postList.map((post, index) => {
+            return (
+              <PostList
+                key={post.post_no}
+                title={post.post_title}
+                subTitle={post.post_subtitle}
+                date={post.post_ins_date}
+                index={index}
+                tags={post.post_tags}
+                postNo={post.post_no}
+              />
+            )
+          })
+        }
+				<PostPagination pageNo={pageNo} lastPostNo={lastPostNo}/>
+			</>
       }
-
-    </Layout>
+    </>
   )
 
 }

@@ -12,7 +12,6 @@ import React, {useEffect, useState} from "react"
 import {EditorContent, useEditor} from "@tiptap/react";
 import useTipTapEditor from "../hooks/useTipTapEditor";
 
-
 const PostView = ()=> {
 
   const router = useRouter()
@@ -28,36 +27,36 @@ const PostView = ()=> {
   }, [post, editor])
 
   return (
-    <Layout>
+    <>
       {(!post && isValidating) && <LoadingSpinner/>}
       {(!post && !isValidating) && <EmptyPost/>}
       {post &&
 			<Fade in={true} timeout={500}>
 				<Box>
 					<PostViewHeader postTitle={post.post_title} postInsDate={post.post_ins_date}/>
-          <Box paddingY={2}>
+					<Box paddingY={2}>
 						<EditorContent className={"editor__content"} editor={editor}/>
-          </Box>
+					</Box>
           {post.post_tags &&
 					<Stack direction="row" spacing={1}>
-              {post.post_tags.split(",").map((tag, index) => {
-                return (
-                  <Chip
-                    key={index}
-                    label={tag}
-                    size={"small"}
-                    variant={"outlined"}
-                    clickable={true}
-                  />
-                )
-              })}
-          </Stack>
+            {post.post_tags.split(",").map((tag, index) => {
+              return (
+                <Chip
+                  key={index}
+                  label={tag}
+                  size={"small"}
+                  variant={"outlined"}
+                  clickable={true}
+                />
+              )
+            })}
+					</Stack>
           }
 					<PostViewBottom/>
 				</Box>
 			</Fade>
       }
-    </Layout>
+    </>
   )
 }
 

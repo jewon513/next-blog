@@ -3,8 +3,9 @@ import {MouseEventHandler} from "react";
 import tz from "../../lib/dayjs";
 import { grey } from '@mui/material/colors';
 import {useSelector} from "react-redux";
+import Link from "next/link"
 
-const PostList = ({title, subTitle, date, index, tags, onClick}:{title:string, subTitle:string, date:string, index:number, tags:string, onClick:MouseEventHandler<Element>})=>{
+const PostList = ({title, subTitle, date, index, tags, postNo}:{title:string, subTitle:string, date:string, index:number, tags:string, postNo:number})=>{
 
   const mode = useSelector(state=>state.common.mode)
 
@@ -54,11 +55,13 @@ const PostList = ({title, subTitle, date, index, tags, onClick}:{title:string, s
             </Grid>
           }
           <Grid item={true} xs={12}>
-            <Typography component={"a"} variant={"subtitle1"} color={"primary"} sx={{
-              cursor:"pointer"
-            }} onClick={onClick}>
-              Read more ...
-            </Typography>
+            <Link href={{pathname: "/post/[postNo]", query: {postNo: postNo}}}>
+              <Typography component={"a"} variant={"subtitle1"} color={"primary"} sx={{
+                cursor:"pointer"
+              }}>
+                Read more ...
+              </Typography>
+            </Link>
           </Grid>
         </Grid>
       </Box>

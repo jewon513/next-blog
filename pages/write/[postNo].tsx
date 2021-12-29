@@ -1,13 +1,11 @@
-import dynamic from "next/dynamic";
 import wrapper from "../../store";
-import {Post, PostType, selectPost} from "../../query/post";
-
-const PostWriteDynamic = dynamic(()=> import("../../modules/PostWrite"),{ssr:false})
+import {PostType, selectPost} from "../../query/post";
+import PostWrite from "../../modules/PostWrite";
 
 const WritePage = ({post})=>{
 
   return (
-    <PostWriteDynamic post={post}/>
+      <PostWrite post={post}/>
   )
 
 }

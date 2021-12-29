@@ -1,6 +1,6 @@
 import type {AppProps} from 'next/app'
 import wrapper from "../store";
-import {ThemeProvider} from "@mui/material";
+import {Box, ThemeProvider} from "@mui/material";
 import useChangeTheme from "../hooks/useChangeTheme";
 import 'normalize.css';
 import "../styles/global.css"
@@ -13,6 +13,7 @@ import Head from "next/head"
 import SnackUtil from "../modules/SnackUtil";
 import useIsomorphicLayoutEffect from "../hooks/useIsomorphicLayoutEffect";
 import {commonActions} from "../store/modules/common";
+import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -35,7 +36,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="author" content="Jewon Park"/>
         <meta name="description" content="Jewon's Blog"/>
       </Head>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
       <SnackUtil/>
     </ThemeProvider>
   )
@@ -57,8 +60,8 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(store => async(appContext)=>{
   // _app에서 props 추가 (모든 컴포넌트에서 공통적으로 사용할 값 추가)
   pageProps = { ...pageProps};
 
-  if (!ctx.req?.url?.startsWith('/_next')) {
-    console.log("새로고침할때만 터짐")
+  if (ctx.req?.url?.startsWith('/_next')) {
+    console.log("refresh")
   }
 
   return { pageProps };

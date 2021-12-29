@@ -49,7 +49,7 @@ const PostWrite = ({post}: { post: PostType }) => {
   const [tagList, setTagList] = useState((post.post_tags && post.post_tags !== "") ? post.post_tags.split(",") : [])
 
   return (
-    <Layout>
+    <>
       {/* 상단 제목, 부제목 */}
       <form onSubmit={handleSubmit(submit)}>
         <Controller
@@ -230,8 +230,7 @@ const PostWrite = ({post}: { post: PostType }) => {
           </Grid>
         </Grid>
       </form>
-
-    </Layout>
+    </>
   )
 }
 
