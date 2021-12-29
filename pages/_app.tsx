@@ -11,11 +11,21 @@ import {userAction} from "../store/modules/user";
 import {LoginResult} from "../query/user";
 import Head from "next/head"
 import SnackUtil from "../modules/SnackUtil";
+import useIsomorphicLayoutEffect from "../hooks/useIsomorphicLayoutEffect";
+import {commonActions} from "../store/modules/common";
 
 function MyApp({ Component, pageProps }: AppProps) {
 
   const {theme} = useChangeTheme()
   const dispatch = useDispatch()
+
+  useIsomorphicLayoutEffect(() => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      dispatch(commonActions.setTheme("dark"))
+    } else {
+      dispatch(commonActions.setTheme("light"))
+    }
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>
@@ -46,6 +56,10 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(store => async(appContext)=>{
 
   // _app에서 props 추가 (모든 컴포넌트에서 공통적으로 사용할 값 추가)
   pageProps = { ...pageProps};
+
+  if (!ctx.req?.url?.startsWith('/_next')) {
+    console.log("새로고침할때만 터짐")
+  }
 
   return { pageProps };
 })

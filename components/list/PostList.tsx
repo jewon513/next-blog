@@ -1,8 +1,12 @@
 import {Box, Chip, Fade, Grid, Grow, Stack, Typography} from "@mui/material";
 import {MouseEventHandler} from "react";
 import tz from "../../lib/dayjs";
+import { grey } from '@mui/material/colors';
+import {useSelector} from "react-redux";
 
 const PostList = ({title, subTitle, date, index, tags, onClick}:{title:string, subTitle:string, date:string, index:number, tags:string, onClick:MouseEventHandler<Element>})=>{
+
+  const mode = useSelector(state=>state.common.mode)
 
   return (
     <Fade in={true}
@@ -18,7 +22,7 @@ const PostList = ({title, subTitle, date, index, tags, onClick}:{title:string, s
       }}>
         <Grid container={true}>
           <Grid item={true} xs={12}>
-            <Typography variant={"subtitle2"} color={"gray"}>
+            <Typography variant={"subtitle2"} color={grey[mode === "light" ? 600 : 400]}>
               {tz(date).format("YYYY-MM-DD")}
             </Typography>
           </Grid>
@@ -28,7 +32,7 @@ const PostList = ({title, subTitle, date, index, tags, onClick}:{title:string, s
             </Typography>
           </Grid>
           <Grid item={true} xs={12} paddingY={2}>
-            <Typography variant={"subtitle1"} color={"gray"}>
+            <Typography variant={"subtitle1"} color={grey[mode === "light" ? 600 : 400]}>
               {subTitle}
             </Typography>
           </Grid>

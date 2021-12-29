@@ -14,12 +14,18 @@ const rootReducer = combineReducers({
 
 const reducer = (state:CombinedState<any>, action:AnyAction)=>{
   if(action.type === HYDRATE){
+    const data = {...action.payload}
+
     return {
       ...state,
-      ...action.payload
+      user : {
+        isLogin: data.user.isLogin,
+        userData: data.user.userData
+      }
     }
+  }else{
+    return rootReducer(state, action)
   }
-  return rootReducer(state, action)
 }
 
 const createStore = ()=>{

@@ -1,15 +1,21 @@
-import {Drawer, Grid, IconButton, Typography} from "@mui/material";
+import {Drawer, Grid, IconButton, Typography, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {useDispatch, useSelector} from "react-redux";
 import {commonActions} from "../store/modules/common";
 import DrawerList from "./list/DrawerList"
 import useGoMain from "../hooks/useGoMain";
+import useChangeTheme from "../hooks/useChangeTheme";
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const Header = ()=>{
 
   const dispatch = useDispatch()
   const drawerOpen = useSelector(state=>state.common.drawerOpen)
+  const theme = useTheme()
+  const {toggleEvent} = useChangeTheme()
   const goMain = useGoMain()
+
 
   return (
     <>
@@ -36,6 +42,9 @@ const Header = ()=>{
           </Typography>
         </Grid>
         <Grid item={true} sx={{marginLeft:"auto"}}>
+          <IconButton onClick={toggleEvent} color={"inherit"}>
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           <IconButton onClick={()=>{dispatch(commonActions.toggleDrawer())}} color={"inherit"}>
             <MenuIcon/>
           </IconButton>
