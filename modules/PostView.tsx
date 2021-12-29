@@ -1,4 +1,3 @@
-import Layout from "../components/Layout";
 import PostViewHeader from "../components/post/PostViewHeader";
 import {Box, Chip, Fade, Stack} from "@mui/material";
 import useSWR from "swr";
@@ -8,9 +7,10 @@ import {useRouter} from "next/router";
 import PostViewBottom from "../components/post/PostViewBottom";
 import {PostType} from "../query/post";
 import EmptyPost from "../components/loading/EmptyPost";
-import React, {useEffect, useState} from "react"
-import {EditorContent, useEditor} from "@tiptap/react";
+import React, {useEffect} from "react"
+import {EditorContent} from "@tiptap/react";
 import useTipTapEditor from "../hooks/useTipTapEditor";
+import Link from "next/link"
 
 const PostView = ()=> {
 
@@ -41,13 +41,15 @@ const PostView = ()=> {
 					<Stack direction="row" spacing={1}>
             {post.post_tags.split(",").map((tag, index) => {
               return (
-                <Chip
-                  key={index}
-                  label={tag}
-                  size={"small"}
-                  variant={"outlined"}
-                  clickable={true}
-                />
+                <Link href={{pathname: "/list/[pageNo]", query: {pageNo: 1, tagName: tag}}} key={index}>
+                  <Chip
+                    key={index}
+                    label={tag}
+                    size={"small"}
+                    variant={"outlined"}
+                    clickable={true}
+                  />
+                </Link>
               )
             })}
 					</Stack>

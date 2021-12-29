@@ -1,21 +1,34 @@
-import Layout from "../components/Layout";
 import PostList from "../components/list/PostList";
 import useGetPostList from "../hooks/useGetPostList";
 import LoadingSpinner from "../components/loading/LoadingSpinner";
 import {useRouter} from "next/router";
 import PostPagination from "./PostPagination";
+import {stringConvertToInteger} from "../lib/utils";
+import {Box, Typography} from "@mui/material";
 
 const MainList = () => {
 
   const router = useRouter();
-  const pageNo = router.query.pageNo ? Number(router.query.pageNo) : 1
-  const [postList, isValidating, lastPostNo] = useGetPostList(pageNo, 3)
+  const pageNo = stringConvertToInteger(router.query.pageNo, 1)
+  const tagName = router.query.tagName ? router.query.tagName : ''
+  const pagePerCnt = 10
+
+  const [postList, isValidating, lastPostNo] = useGetPostList({pageNo, pagePerCnt, tagName})
 
   return (
     <>
       {!postList && <LoadingSpinner/>}
       {postList &&
 			<>
+        {tagName &&
+          <Box paddingY={1}>
+            <Typography variant={"h5"} sx={{
+              fontWeight:"bold"
+            }}>
+              Tag: {tagName}
+            </Typography>
+          </Box>
+        }
         {
           postList.map((post, index) => {
             return (
@@ -36,7 +49,6 @@ const MainList = () => {
       }
     </>
   )
-
 }
 
 export default MainList

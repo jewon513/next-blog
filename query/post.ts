@@ -30,8 +30,13 @@ export type PostListType = {
 }
 
 export type PostListResult = {
-  list: Array<PostListType>
+  list?: Array<PostListType>
   cnt: number
+  tag?: {
+    tag_no:number,
+    tag_name:string,
+    tag_ins_date:string
+  }
 }
 
 export type InsertPostParamType = Pick<Post, "post_title"|"post_subtitle"|"post_contents"|"post_user_no"> & {post_tag_list?: string[]}
@@ -89,13 +94,17 @@ export const updatePost = async ({post_no, post_contents, post_subtitle, post_ti
   return {result:1}
 }
 
-export const selectPostList = async ({pageNo, pagePerCnt}) => {
+export const selectPostList = async ({pageNo, pagePerCnt, tagName}) => {
   const selectResult = await query(`
-    CALL usp_get_list_post_basic(?,?);
-  `, [pageNo, pagePerCnt])
+    CALL usp_get_list_post_basic_v1(?,?,?);
+  `, [pageNo, pagePerCnt, tagName])
+
+  const cnt = dataConvertToJson(selectResult[0]).cnt
+  const list = dataConvertToJson(selectResult[1], true)
+
   return {
-    cnt:dataConvertToJson(selectResult[0]).cnt,
-    list:dataConvertToJson(selectResult[1], true)
+    cnt: cnt,
+    list: list
   }
 }
 

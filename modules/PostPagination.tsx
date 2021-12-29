@@ -14,7 +14,7 @@ const PostPagination = ({pageNo, lastPostNo})=>{
         onChange={(event, pageNo) => {
           router.push({
             pathname: "/list/[pageNo]",
-            query: {pageNo: pageNo}
+            query: {...router.query, pageNo: pageNo}
           })
         }}
       />

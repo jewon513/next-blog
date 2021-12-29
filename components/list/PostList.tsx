@@ -1,7 +1,6 @@
-import {Box, Chip, Fade, Grid, Grow, Stack, Typography} from "@mui/material";
-import {MouseEventHandler} from "react";
+import {Box, Chip, Fade, Grid, Stack, Typography} from "@mui/material";
 import tz from "../../lib/dayjs";
-import { grey } from '@mui/material/colors';
+import {grey} from '@mui/material/colors';
 import {useSelector} from "react-redux";
 import Link from "next/link"
 
@@ -42,13 +41,14 @@ const PostList = ({title, subTitle, date, index, tags, postNo}:{title:string, su
 							<Stack direction="row" spacing={1}>
                 {tags.split(",").map((tag, index) => {
                   return (
-                    <Chip
-                      key={index}
-                      label={tag}
-                      size={"small"}
-                      variant={"outlined"}
-                      clickable={true}
-                    />
+                    <Link href={{pathname: "/list/[pageNo]", query: {pageNo: 1, tagName: tag}}} key={index}>
+                      <Chip
+                        label={tag}
+                        size={"small"}
+                        variant={"outlined"}
+                        clickable={true}
+                      />
+                    </Link>
                   )
                 })}
               </Stack>

@@ -28,7 +28,11 @@ handler.get("/api/post",async(req, res)=>{
     const result = await selectPost(req.query.postNo)
     res.json(result)
   }else if(req.query?.pageNo && req.query?.pagePerCnt){
-    const {list,cnt} = await selectPostList({pageNo:req.query.pageNo, pagePerCnt:req.query.pagePerCnt})
+    const {list,cnt} = await selectPostList({
+      pageNo:req.query.pageNo,
+      pagePerCnt:req.query.pagePerCnt,
+      tagName:req.query.tagName
+    })
     res.json({
       list, cnt
     })

@@ -11,10 +11,14 @@ export const dataConvertToJson = (sqlResult: any, list = false) => {
         // nothing...
         break;
       default:
-        data = undefined
+        data = null
     }
   }
-  return data ? JSON.parse(JSON.stringify(data)) : undefined
+  return data ? JSON.parse(JSON.stringify(data)) : null
 }
 
 export const fetcher = url => axios.get(url).then(res => res.data)
+
+export const stringConvertToInteger = (value, defaultValue)=>{
+  return Math.abs(Number.isSafeInteger(Number(value)) ? Number(value) : defaultValue)
+}
