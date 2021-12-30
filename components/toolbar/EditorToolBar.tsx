@@ -7,13 +7,15 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import CodeIcon from "@mui/icons-material/Code";
-import {Box} from "@mui/material";
-import React, {LegacyRef, useRef} from "react";
+import {Backdrop, Box, CircularProgress} from "@mui/material";
+import React, {LegacyRef, useRef, useState} from "react";
 import axios from "axios";
 import {Editor} from "@tiptap/react";
 
 
 const EditorToolBar = ({editor}:{editor:Editor|null})=>{
+
+  const [loading, setLoading] = useState(false)
 
   const addImage = () => {
     if (inputRef.current) {
@@ -22,6 +24,7 @@ const EditorToolBar = ({editor}:{editor:Editor|null})=>{
   }
   const inputRef = useRef<HTMLInputElement>();
   const handleImageUpd = (e) => {
+    setLoading(true)
     const files = e.target.files
     const body = new FormData();
     body.append("image", files[0])
@@ -31,6 +34,7 @@ const EditorToolBar = ({editor}:{editor:Editor|null})=>{
       const {data} = res
       let imgTag = `<img src='${data.url}' data-ref='${data.filename}'/>`
       editor?.commands.insertContent(imgTag)
+      setLoading(false)
     })
   }
 
@@ -66,6 +70,13 @@ const EditorToolBar = ({editor}:{editor:Editor|null})=>{
           editor?.chain().focus().toggleCodeBlock().run()
         }}/>
       </Box>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="primary" />
+      </Backdrop>
 
       <input
         id="hiddenInput"
