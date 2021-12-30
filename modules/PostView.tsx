@@ -6,7 +6,7 @@ import LoadingSpinner from "../components/loading/LoadingSpinner";
 import {useRouter} from "next/router";
 import PostViewBottom from "../components/post/PostViewBottom";
 import {PostType} from "../query/post";
-import EmptyPost from "../components/loading/EmptyPost";
+import ErrorContent from "../components/loading/ErrorContent";
 import React, {useEffect} from "react"
 import {EditorContent} from "@tiptap/react";
 import useTipTapEditor from "../hooks/useTipTapEditor";
@@ -29,7 +29,7 @@ const PostView = ()=> {
   return (
     <>
       {(!post && isValidating) && <LoadingSpinner/>}
-      {(!post && !isValidating) && <EmptyPost/>}
+      {(!post && !isValidating) && <ErrorContent text={"포스트가 존재하지 않습니다."}/>}
       {post &&
 			<Fade in={true} timeout={500}>
 				<Box>

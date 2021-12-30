@@ -57,9 +57,6 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(store => async(appContext)=>{
     store.dispatch(userAction.login(jwtCheckResult.data.userData as LoginResult))
   }
 
-  // _app에서 props 추가 (모든 컴포넌트에서 공통적으로 사용할 값 추가)
-  pageProps = { ...pageProps};
-
   if (ctx.req?.url?.startsWith('/_next')) {
     console.log("refresh")
   }

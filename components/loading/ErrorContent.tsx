@@ -1,7 +1,7 @@
 import {Box, Typography} from "@mui/material";
 import useMainHeight from "../../hooks/useMainHeight";
 
-const EmptyPost = ()=>{
+const ErrorContent = ({text})=>{
   const height = useMainHeight()
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexDirection={"row"} sx={{
@@ -10,10 +10,10 @@ const EmptyPost = ()=>{
       <Typography variant={"h5"} textAlign={"center"} sx={{
         fontWeight:"bold"
       }}>
-        포스트가 존재하지 않습니다.
+        {text}
       </Typography>
     </Box>
   )
 }
 
-export default EmptyPost
+export default ErrorContent
