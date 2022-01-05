@@ -1,11 +1,10 @@
-import {Box} from "@mui/material";
-import {useEffect} from "react";
+import dynamic from "next/dynamic";
 
+
+const FroalaModuleDynamic = dynamic(()=> import("../../modules/FroalaModule"),{ssr:false})
 const AboutPage = (props)=>{
   return (
-    <Box>
-
-    </Box>
+    <FroalaModuleDynamic/>
   )}
 
 export default AboutPage
